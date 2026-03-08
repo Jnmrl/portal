@@ -237,7 +237,7 @@
                 const initials = user.name.split(' ').map(n => n[0]).join('+');
                 document.getElementById('headerProfilePic').src = user.profilePic || `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
             } else {
-                window.location.href = '../Login Page/index.html';
+                window.location.href = '../index.html';
             }
             renderTable();
         });

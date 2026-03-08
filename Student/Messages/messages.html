@@ -175,7 +175,7 @@
                     <li class="nav-item"><a class="nav-link" href="../Calendar/calendar.html"><i class="fas fa-calendar-alt me-2"></i> Calendar</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-envelope me-2"></i> Messages</a></li>
                     <li class="nav-item mt-lg-5">
-                        <a class="nav-link text-danger" href="../../Login Page/index.html" onclick="localStorage.removeItem('currentUser')">
+                        <a class="nav-link text-danger" href="../index.html" onclick="localStorage.removeItem('currentUser')">
                             <i class="fas fa-sign-out-alt me-2"></i> Log out
                         </a>
                     </li>
@@ -224,7 +224,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (!user) { window.location.href = '../../login.html'; return; }
+            if (!user) { window.location.href = '../index.html'; return; }
             
             const pID = user.portalId || user.studentId || "N/A";
             document.getElementById('headerName').innerText = user.name;

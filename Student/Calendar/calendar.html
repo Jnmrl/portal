@@ -19,66 +19,45 @@
 
         body { 
             background-color: var(--accent-bg); 
-            font-family: 'Inter', sans-serif; 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
             margin: 0;
             color: var(--text-main);
+            overflow-x: hidden;
             min-width: 300px;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- SIDEBAR (Updated to match Index) --- */
         .navbar { 
             background: var(--sidebar-bg); 
+            min-height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
             z-index: 1050;
-            padding: 0.8rem 1.5rem;
-        }
-
-        /* Desktop Sidebar Setup */
-        @media (min-width: 992px) {
-            .navbar {
-                position: fixed;
-                left: 0;
-                top: 0;
-                height: 100vh;
-                width: 260px;
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                padding: 2rem 1.2rem;
-            }
-            .navbar-collapse {
-                width: 100%;
-                align-items: flex-start;
-            }
-            .navbar-nav {
-                flex-direction: column !important;
-                width: 100%;
-                margin-top: 2rem;
-            }
-            main, .top-header {
-                margin-left: 260px;
-            }
+            align-items: flex-start;
         }
 
         .nav-link { 
-            color: rgba(255,255,255,0.8) !important; 
-            padding: 12px 18px !important; 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 14px 20px; 
             border-radius: 12px; 
-            margin-bottom: 5px; 
+            margin-bottom: 8px; 
             transition: 0.3s; 
             display: flex;
             align-items: center;
+            text-decoration: none;
+            width: 100%;
         }
 
-        .nav-link i { width: 30px; font-size: 1.1rem; }
+        .nav-link i { width: 25px; font-size: 1.1rem; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
 
-        .nav-link:hover, .nav-link.active { 
-            background: rgba(255,255,255,0.15); 
-            color: #fff !important; 
-        }
-
-        /* --- TOP HEADER (Profile Area) --- */
+        /* --- TOP HEADER --- */
         .top-header {
-            background: var(--white);
-            padding: 0.8rem 2rem;
+            margin-left: 260px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 2.5rem;
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -88,24 +67,26 @@
             z-index: 1000;
         }
 
-        .header-pic {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            padding: 2px;
-            background: white;
+        .header-profile { 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            gap: 12px; 
         }
 
-        @media (max-width: 991px) {
-            .top-header { padding: 0.5rem 1rem; }
-            .navbar-brand { font-weight: bold; }
+        .header-pic { 
+            border: 2px solid var(--primary); 
+            padding: 2px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            background: #fff;
         }
 
-        /* --- CALENDAR STYLING --- */
-        main { padding: 2rem; }
-        
+        /* --- MAIN CONTENT --- */
+        main { margin-left: 260px; padding: 2.5rem; transition: 0.3s; }
+
+        /* --- CALENDAR SPECIFIC --- */
         .calendar-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
@@ -131,37 +112,42 @@
         
         .view-activities-btn {
             width: 100%; background: #f0f7ff; color: var(--primary); border: none;
-            padding: 10px; border-radius: 0 0 20px 20px; font-weight: 700; transition: 0.3s;
+            padding: 12px; font-weight: 700; transition: 0.3s;
         }
         .view-activities-btn:hover { background: var(--primary); color: white; }
 
-        @media (max-width: 576px) {
-            main { padding: 1rem; }
-            .calendar-grid { grid-template-columns: 1fr; }
+        /* --- MOBILE RESPONSIVE (Matching Index) --- */
+        @media (max-width: 991px) {
+            .navbar { width: 100%; min-height: auto; position: fixed; top: 0; padding: 0.8rem 1rem; flex-direction: row !important; }
+            .top-header { margin-left: 0; margin-top: 65px; padding: 0.8rem 1.5rem; }
+            main { margin-left: 0; padding: 1.5rem; }
+            .desktop-only { display: none; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 60px; left: 0; width: 100%; padding: 1.5rem; border-radius: 0 0 20px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid flex-lg-column align-items-stretch">
-            <a class="navbar-brand fw-bold mb-lg-4" href="#">
-                <i class="fas fa-graduation-cap me-2"></i>Portal
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav w-100">
-                    <li class="nav-item"><a class="nav-link" href="../Dashboard/index.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../Strand/Strand.html"><i class="fas fa-layer-group"></i> Strand</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../Messages/messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
-                    <li class="nav-item mt-lg-auto">
-                        <a class="nav-link text-warning" href="../index.html" onclick="localStorage.removeItem('currentUser')">
-                            <i class="fas fa-sign-out-alt"></i> Log out
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="user-brand-mobile d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                    <i class="fas fa-graduation-cap me-2"></i> 
+                    <span class="desktop-only">Portal</span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="../Dashboard/index.html"><i class="fas fa-th-large me-2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Strand/Strand.html"><i class="fas fa-layer-group me-2"></i> Strand</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-calendar-alt me-2"></i> Calendar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Messages/messages.html"><i class="fas fa-envelope me-2"></i> Messages</a></li>
+                    <li class="nav-item mt-lg-5">
+                        <a class="nav-link text-danger" href="../../index.html" onclick="localStorage.removeItem('currentUser')">
+                            <i class="fas fa-sign-out-alt me-2"></i> Log out
                         </a>
                     </li>
                 </ul>
@@ -170,15 +156,12 @@
     </nav>
 
     <header class="top-header">
-        <a href="../Dashboard/Profile/index.html" class="text-decoration-none d-flex align-items-center gap-3">
+        <a href="../Dashboard/Profile/index.html" class="header-profile">
             <div class="text-end d-none d-sm-block">
-                <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.9rem;">Student Name</p>
+                <p class="fw-bold mb-0 text-dark" id="headerName">Student Name</p>
                 <small class="text-muted" id="headerID">ID: 0000-000</small>
             </div>
-            <img src="../Dashboard/Profile/Pictures/profile.jpg" 
-                 id="headerProfilePic" 
-                 class="header-pic" 
-                 onerror="this.src='https://ui-avatars.com/api/?name=User&background=0067ba&color=fff'">
+            <img src="../Dashboard/Profile/Pictures/profile.jpg" id="headerProfilePic" class="header-pic" width="45" height="45" onerror="this.src='https://ui-avatars.com/api/?name=User&background=0067ba&color=fff'">
         </a>
     </header>
 
@@ -200,17 +183,11 @@
                 document.getElementById('headerName').innerText = user.name || "Student Name";
                 document.getElementById('headerID').innerText = `ID: ${user.portalId || '0000'}`;
                 
-                // --- PFP LOGIC ---
                 const savedPhoto = localStorage.getItem(`photo_${user.portalId}`);
                 const profileImg = document.getElementById('headerProfilePic');
                 
-                if (savedPhoto && savedPhoto.startsWith('data:image')) {
+                if (savedPhoto) {
                     profileImg.src = savedPhoto;
-                } else {
-                    // Generates initials if no photo is found
-                    const nameParts = (user.name || "Student").split(' ');
-                    const initials = nameParts.length > 1 ? nameParts[0][0] + nameParts[1][0] : nameParts[0][0];
-                    profileImg.src = `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
                 }
             }
         });

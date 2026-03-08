@@ -224,7 +224,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // 1. AUTH & HEADER SYNC
@@ -238,7 +237,7 @@
                 const initials = user.name.split(' ').map(n => n[0]).join('+');
                 document.getElementById('headerProfilePic').src = user.profilePic || `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
             } else {
-                window.location.href = 'login.html';
+                window.location.href = '../Login Page/index.html';
             }
             renderTable();
         });
@@ -247,7 +246,7 @@
         function handleLogout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem('currentUser');
-                window.location.href = '../Login Page/login.html';
+                window.location.href = '../Login Page/index.html';
             }
         }
 

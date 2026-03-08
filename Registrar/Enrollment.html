@@ -188,7 +188,7 @@
         function handleLogout() {
             if(confirm("Are you sure you want to log out? This will end your session permanently.")) {
                 localStorage.removeItem('currentUser');
-                window.location.replace('../Login Page/login.html');
+                window.location.href = '../Login Page/index.html';
             }
         }
 

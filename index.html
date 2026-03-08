@@ -126,7 +126,8 @@
                                 <select class="form-select" id="loginClass">
                                     <option value="student">Student</option>
                                     <option value="teacher">Teacher</option>
-                                    <option value="registrar">Registrar</option> </select>
+                                    <option value="registrar">Registrar</option>
+                                </select>
                             </div>
 
                             <div class="mb-1">
@@ -160,7 +161,8 @@
                                 <select class="form-select" id="signupClass">
                                     <option value="student">Student</option>
                                     <option value="teacher">Teacher</option>
-                                    <option value="registrar">Registrar</option> </select>
+                                    <option value="registrar">Registrar</option>
+                                </select>
                             </div>
                             
                             <button type="submit" class="btn btn-auth w-100 mt-3" style="background: #28a745;">CREATE ACCOUNT</button>
@@ -180,6 +182,7 @@
     <script>
         const getUsers = () => JSON.parse(localStorage.getItem('users')) || [];
 
+        // SIGNUP LOGIC
         document.getElementById('signupForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
             const users = getUsers();
@@ -200,9 +203,10 @@
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
             alert('Account created! You can now log in.');
-            location.reload();
+            location.reload(); 
         });
 
+        // LOGIN LOGIC
         document.getElementById('loginForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
             const users = getUsers();
@@ -218,16 +222,14 @@
 
             if (user) {
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                const role = user.classification.toLowerCase();
                 
-                // UPDATED REDIRECTION LOGIC
+                const role = user.classification.toLowerCase();
                 if (role === "student") {
-                    window.location.href = '../Student/Dashboard/index.html'; 
+                    window.location.href = './Student/Dashboard/index.html'; 
                 } else if (role === "teacher") {
-                    window.location.href = '../Teachers/index.html';
+                    window.location.href = './Teachers/index.html';
                 } else if (role === "registrar") {
-                    // This redirects to the Dashboard.html you provided
-                    window.location.href = '../Registrar/index.html'; 
+                    window.location.href = './Registrar/index.html'; 
                 }
             } else {
                 alert('Invalid credentials. Check your ID, Password, and Role.');

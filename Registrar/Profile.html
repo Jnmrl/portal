@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar | My Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: linear-gradient(180deg, #0067ba, #5700de);
+            --accent-bg: #f0f4f8; 
+            --white: #ffffff;
+            --primary: #0067ba;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        body { background-color: var(--accent-bg); font-family: 'Inter', sans-serif; color: #2d3436; overflow-x: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; transition: 0.3s; z-index: 1100; }
+        .sidebar-user-section { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 10px; object-fit: cover; }
+        
+        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin: 0.2rem 1rem; transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+        
+        /* Adjusted Main Content (No Header) */
+        main { margin-left: 260px; padding: 3rem 2rem; min-height: 100vh; }
+
+        .profile-card { background: var(--white); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.03); }
+        .profile-header-bg { height: 140px; background: linear-gradient(90deg, #0067ba, #00d2ff); }
+        .profile-img-container { margin-top: -70px; position: relative; display: inline-block; }
+        .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 6px solid white; object-fit: cover; background: #eee; }
+        
+        .edit-avatar-btn {
+            position: absolute; bottom: 8px; right: 8px;
+            background: var(--primary); color: white; border-radius: 50%;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            border: 2px solid white; cursor: pointer; transition: 0.2s;
+        }
+
+        .form-control { border-radius: 10px; padding: 0.75rem 1rem; border: 1px solid #dee2e6; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 0.25rem rgba(0, 103, 186, 0.1); }
+
+        @media (max-width: 991px) {
+            .sidebar { margin-left: -260px; }
+            .sidebar.active { margin-left: 0; }
+            main { margin-left: 0; padding: 1.5rem; }
+            .mobile-trigger { display: block; position: fixed; top: 15px; left: 15px; z-index: 1200; background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; }
+        }
+        
+        .mobile-trigger { display: none; }
+    </style>
+</head>
+<body>
+
+    <button class="mobile-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-user-section">
+            <img id="sidebarAvatar" src="" class="sidebar-avatar shadow-sm">
+            <h6 class="text-white mb-0 fw-bold" id="sidebarName">Registrar Officer</h6>
+            <small class="text-white-50">ID: REG-2026</small>
+        </div>
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item"><a class="nav-link" href="Dashboard.html"><i class="fas fa-th-large me-3"></i>Overview</a></li>
+            <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-3"></i>Enrollment</a></li>
+            <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-invoice me-3"></i>Requests</a></li>
+            <li class="nav-item"><a class="nav-link" href="Records.html"><i class="fas fa-clipboard-list me-3"></i>Records</a></li>
+            <li class="nav-item mt-auto mb-4"><a class="nav-link text-warning" href="#" onclick="handleLogout()"><i class="fas fa-power-off me-3"></i>Log out</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <div class="profile-card">
+                    <div class="profile-header-bg"></div>
+                    <div class="px-4 pb-4 text-center">
+                        <div class="profile-img-container">
+                            <img src="" id="profilePreview" class="profile-img shadow-lg">
+                            <label for="avatarUpload" class="edit-avatar-btn">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" id="avatarUpload" hidden accept="image/*">
+                            </label>
+                        </div>
+                        <h2 class="fw-bold mt-3 mb-1" id="userNameLabel">Registrar Officer</h2>
+                        <span class="badge bg-light text-primary border px-3 py-2 rounded-pill">Senior Registrar Administrator</span>
+                    </div>
+
+                    <div class="px-4 px-md-5 pb-5 mt-3">
+                        <form id="profileForm">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">FULL NAME</label>
+                                    <input type="text" id="fullName" class="form-control form-control-lg" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
+                                    <input type="email" id="email" class="form-control form-control-lg">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">CONTACT NUMBER</label>
+                                    <input type="text" id="phone" class="form-control form-control-lg">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">EMPLOYEE STATUS</label>
+                                    <input type="text" class="form-control form-control-lg bg-light" value="Full-Time Personnel" readonly>
+                                </div>
+                                <div class="col-12 mt-5">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 shadow">
+                                        <i class="fas fa-save me-2"></i> Save Profile Settings
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA PERSISTENCE ---
+        function loadData() {
+            const user = JSON.parse(localStorage.getItem('currentUser')) || {
+                name: "Registrar Officer",
+                email: "registrar@school.edu",
+                phone: "0912-345-6789",
+                profilePic: "https://ui-avatars.com/api/?name=Registrar+Officer&background=0067ba&color=fff"
+            };
+
+            // Form Inputs
+            document.getElementById('fullName').value = user.name;
+            document.getElementById('email').value = user.email;
+            document.getElementById('phone').value = user.phone;
+            
+            // Visuals
+            document.getElementById('profilePreview').src = user.profilePic;
+            document.getElementById('sidebarAvatar').src = user.profilePic;
+            document.getElementById('sidebarName').innerText = user.name;
+            document.getElementById('userNameLabel').innerText = user.name;
+        }
+
+        // --- IMAGE PROCESSING ---
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64 = event.target.result;
+                    document.getElementById('profilePreview').src = base64;
+                    document.getElementById('sidebarAvatar').src = base64;
+                    
+                    // Instant save for avatar
+                    const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+                    user.profilePic = base64;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- SAVE ACTION ---
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+            
+            user.name = document.getElementById('fullName').value;
+            user.email = document.getElementById('email').value;
+            user.phone = document.getElementById('phone').value;
+
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Update Sidebar/Labels
+            document.getElementById('sidebarName').innerText = user.name;
+            document.getElementById('userNameLabel').innerText = user.name;
+            
+            alert("Settings saved successfully!");
+        });
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function handleLogout() {
+            if(confirm("Are you sure you want to log out?")) window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+
+         function handleLogout() {
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../Login Page/login.html';
+            }
+        }
+    </script>
+</body>
+</html>

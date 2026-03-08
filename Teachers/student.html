@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Students | Teacher Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: linear-gradient(180deg, #0067ba, #5700de);
+            --accent-bg: #f0f4f8; 
+            --white: #ffffff;
+            --primary: #0067ba;
+            --text-main: #2d3436;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Desktop fixed layout */
+            background-color: var(--accent-bg);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        /* --- SIDEBAR & HEADER --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050;
+            align-items: flex-start;
+        }
+
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+
+        .top-header {
+            margin-left: 260px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 2rem; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px; 
+        }
+
+        /* --- RESPONSIVE MAIN AREA --- */
+        main { 
+            margin-left: 260px; 
+            height: calc(100vh - 60px); 
+            padding: 2rem; 
+            overflow-y: auto; 
+        }
+
+        .student-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            border: none;
+        }
+
+        .section-divider {
+            background-color: #f8faff !important;
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* --- MOBILE ADAPTATIONS --- */
+        @media (max-width: 991px) {
+            html, body { overflow: auto; }
+            .navbar { 
+                width: 100%; 
+                height: auto; 
+                position: fixed; 
+                top: 0; 
+                padding: 0.7rem 1rem; 
+                flex-direction: row !important; 
+            }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
+            main { margin-left: 0; height: auto; padding: 1rem; overflow: visible; }
+            .navbar-collapse { 
+                background: var(--sidebar-bg); 
+                position: absolute; 
+                top: 55px; 
+                left: 0; 
+                width: 100%; 
+                padding: 1rem; 
+                border-radius: 0 0 20px 20px; 
+            }
+            .desktop-only { display: none; }
+            .navbar-brand { font-size: 1.1rem; }
+        }
+
+        .table-responsive {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .status-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold" href="homepage.html">
+                    <i class="fas fa-chalkboard-teacher me-2"></i> 
+                    <span class="desktop-only">Teacher Portal</span>
+                    <span class="d-lg-none">Portal</span>
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="homepage.html"><i class="fas fa-chart-line me-2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="student.html"><i class="fas fa-users me-2"></i> My Students</a></li>
+                    <li class="nav-item"><a class="nav-link" href="curriculum.html"><i class="fas fa-book-open me-2"></i> Curriculum</a></li>
+                    <li class="nav-item"><a class="nav-link" href="attendance.html"><i class="fas fa-calendar-check me-2"></i> Attendance</a></li>
+                    <li class="nav-item mt-lg-5">
+                        <a class="nav-link text-danger" href="javascript:void(0)" onclick="handleLogout()">
+                            <i class="fas fa-power-off me-2"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="top-header">
+        <a href="profile.html" class="d-flex align-items-center gap-2 text-decoration-none" style="cursor: pointer;">
+            <div class="text-end d-none d-sm-block">
+                <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.8rem;">Professor</p>
+                <small class="text-muted" id="headerID" style="font-size: 0.65rem;">Portal ID</small>
+            </div>
+            <img src="" id="headerProfilePic" class="rounded-circle border border-primary p-1" width="32" height="32" alt="User Profile">
+        </a>
+    </header>
+
+    <main>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+            <div>
+                <h3 class="fw-bold mb-0" style="color: var(--primary);">Student List</h3>
+                <p class="text-muted small mb-0">Manage sections & enrollment</p>
+            </div>
+            <button class="btn btn-primary btn-sm rounded-3 px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                <i class="fas fa-plus me-2"></i>Add Student
+            </button>
+        </div>
+
+        <div class="bg-white p-2 rounded-3 shadow-sm d-flex align-items-center px-3 mb-4 border">
+            <i class="fas fa-search text-muted me-2"></i>
+            <input type="text" id="studentSearch" class="form-control border-0 shadow-none" placeholder="Search name or ID...">
+        </div>
+
+        <div class="student-card p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Student</th>
+                            <th>ID Number</th>
+                            <th>Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="groupedTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="addStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+                <div class="modal-header border-0 pt-4 px-4">
+                    <h5 class="fw-bold">New Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="addStudentForm">
+                    <div class="modal-body px-4">
+                        <input type="text" id="newName" class="form-control mb-3 bg-light border-0" placeholder="Full Name" required>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <select id="newSection" class="form-select bg-light border-0" required>
+                                    <option value="Quezon">Quezon</option>
+                                    <option value="Lapu-Lapu">Lapu-Lapu</option>
+                                    <option value="Escoda">Escoda</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" id="newID" class="form-control bg-light border-0" placeholder="ID (e.g. 2024-001)" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4">
+                        <button type="submit" class="btn btn-primary w-100 rounded-3 fw-bold">Register Student</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 1. AUTH & HEADER SYNC
+        document.addEventListener('DOMContentLoaded', () => {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                document.getElementById('headerName').innerText = user.name;
+                document.getElementById('headerID').innerText = "ID: " + user.portalId;
+                
+                const initials = user.name.split(' ').map(n => n[0]).join('+');
+                document.getElementById('headerProfilePic').src = user.profilePic || `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
+            } else {
+                window.location.href = 'login.html';
+            }
+            renderTable();
+        });
+
+        // LOGOUT FUNCTION
+        function handleLogout() {
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../Login Page/login.html';
+            }
+        }
+
+        // 2. STUDENT DATA MANAGEMENT
+        let students = JSON.parse(localStorage.getItem('portal_students')) || [
+            { id: "2024-001", name: "Alice Johnson", section: "Quezon", status: "Passing" },
+            { id: "2024-005", name: "Mark Smith", section: "Escoda", status: "At Risk" },
+            { id: "2024-012", name: "Sia Vang", section: "Lapu-Lapu", status: "Passing" }
+        ];
+
+        function saveToStorage() {
+            localStorage.setItem('portal_students', JSON.stringify(students));
+        }
+
+        // 3. RENDER FUNCTION
+        function renderTable(filter = "") {
+            const tbody = document.getElementById('groupedTableBody');
+            students.sort((a, b) => a.section.localeCompare(b.section));
+            const filtered = students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()) || s.id.includes(filter));
+            
+            let html = "";
+            let currentSection = "";
+
+            filtered.forEach(s => {
+                if (s.section !== currentSection) {
+                    currentSection = s.section;
+                    html += `<tr><td colspan="4" class="section-divider ps-4 py-2" style="background:#f1f7ff; font-weight:bold; color:#0067ba;">${currentSection}</td></tr>`;
+                }
+
+                html += `
+                    <tr>
+                        <td class="ps-4 fw-bold text-primary">${s.name}</td>
+                        <td><small class="text-muted">${s.id}</small></td>
+                        <td>
+                            <span class="status-badge" style="background:${s.status === 'Passing' ? '#e8f5e9' : '#ffebee'}; color:${s.status === 'Passing' ? '#2e7d32' : '#c62828'}">
+                                ${s.status}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light text-danger" onclick="removeStudent('${s.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+
+            tbody.innerHTML = html || '<tr><td colspan="4" class="text-center py-4">No records found.</td></tr>';
+        }
+
+        // 4. ADD STUDENT
+        document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newStudent = {
+                id: document.getElementById('newID').value,
+                name: document.getElementById('newName').value,
+                section: document.getElementById('newSection').value,
+                status: "Pending"
+            };
+            students.push(newStudent);
+            saveToStorage();
+            renderTable();
+            bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
+            this.reset();
+        });
+
+        // 5. REMOVE STUDENT
+        function removeStudent(id) {
+            if(confirm("Are you sure you want to remove this student?")) {
+                students = students.filter(s => s.id !== id);
+                saveToStorage();
+                renderTable();
+            }
+        }
+
+        // 6. SEARCH
+        document.getElementById('studentSearch').addEventListener('input', (e) => renderTable(e.target.value));
+    </script>
+</body>
+</html>

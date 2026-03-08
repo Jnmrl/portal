@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Auth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { 
+            --primary-gradient: linear-gradient(135deg, #0067ba 0%, #5700de 100%); 
+            --bg-theme: #d6f0f8; 
+            --glass: rgba(255, 255, 255, 0.95); 
+        }
+
+        body { 
+            background-color: var(--bg-theme); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px 15px; 
+            overflow-x: hidden; 
+        }
+
+        .auth-container { 
+            width: 100%; 
+            max-width: 420px; 
+            min-width: 300px; 
+            margin: auto; 
+        }
+
+        .auth-card { 
+            border: none; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            background: var(--glass); 
+            backdrop-filter: blur(10px); 
+        }
+
+        .nav-pills {
+            background: rgba(0,0,0,0.05);
+            border-radius: 15px;
+            padding: 5px;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 12px;
+            color: #555;
+            font-weight: 600;
+            transition: 0.3s ease;
+            padding: 10px; 
+        }
+
+        .nav-pills .nav-link.active { 
+            background: var(--primary-gradient); 
+            color: white !important; 
+            box-shadow: 0 4px 15px rgba(87, 0, 222, 0.3);
+        }
+
+        .form-control, .form-select { 
+            border-radius: 12px; 
+            padding: 12px 15px;
+            margin-bottom: 15px; 
+            border: 1px solid #dee2e6;
+            font-size: 16px; 
+        }
+
+        .btn-auth { 
+            border-radius: 12px; 
+            padding: 14px; 
+            font-weight: 700; 
+            border: none; 
+            color: white; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s;
+        }
+
+        .btn-auth:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 480px) {
+            .auth-card { border-radius: 15px; }
+            .card-body { padding: 1.5rem !important; }
+            h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">
+                <i class="fas fa-graduation-cap me-2"></i>Portal
+            </h2>
+            <p class="text-muted small">Welcome back! Please enter your details.</p>
+        </div>
+        
+        <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
+            <li class="nav-item flex-fill text-center" role="presentation">
+                <button class="nav-link active w-100" id="login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab">Login</button>
+            </li>
+            <li class="nav-item flex-fill text-center" role="presentation">
+                <button class="nav-link w-100" id="signup-tab" data-bs-toggle="pill" data-bs-target="#pills-signup" type="button" role="tab">Sign Up</button>
+            </li>
+        </ul>
+
+        <div class="card auth-card">
+            <div class="card-body">
+                <div class="tab-content">
+                    
+                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
+                        <form id="loginForm">
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Portal ID</label>
+                                <input type="text" class="form-control" id="loginPortalID" placeholder="Enter Portal ID" required>
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Classification</label>
+                                <select class="form-select" id="loginClass">
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="registrar">Registrar</option> </select>
+                            </div>
+
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Password</label>
+                                <input type="password" class="form-control" id="loginPass" placeholder="••••••••" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-auth w-100 mt-3" style="background: var(--primary-gradient);">SIGN IN</button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-signup" role="tabpanel">
+                        <form id="signupForm">
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Portal ID</label>
+                                <input type="text" class="form-control" id="signupPortalID" placeholder="Create your Portal ID" required>
+                            </div>
+
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Full Name</label>
+                                <input type="text" class="form-control" id="signupName" placeholder="John Doe" required>
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Password</label>
+                                <input type="password" class="form-control" id="signupPass" placeholder="••••••••" required>
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label class="form-label small fw-bold">Classification</label>
+                                <select class="form-select" id="signupClass">
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="registrar">Registrar</option> </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-auth w-100 mt-3" style="background: #28a745;">CREATE ACCOUNT</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted small">© 2026 Student Management System</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const getUsers = () => JSON.parse(localStorage.getItem('users')) || [];
+
+        document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const users = getUsers();
+            const portalId = document.getElementById('signupPortalID').value.trim();
+
+            if (users.some(u => u.portalId === portalId)) {
+                alert('This Portal ID is already registered!');
+                return;
+            }
+
+            const newUser = {
+                portalId: portalId,
+                name: document.getElementById('signupName').value.trim(),
+                password: document.getElementById('signupPass').value,
+                classification: document.getElementById('signupClass').value 
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Account created! You can now log in.');
+            location.reload();
+        });
+
+        document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const users = getUsers();
+            const idIn = document.getElementById('loginPortalID').value.trim();
+            const classIn = document.getElementById('loginClass').value; 
+            const passIn = document.getElementById('loginPass').value;
+
+            const user = users.find(u => 
+                u.portalId === idIn && 
+                u.password === passIn && 
+                u.classification === classIn
+            );
+
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                const role = user.classification.toLowerCase();
+                
+                // UPDATED REDIRECTION LOGIC
+                if (role === "student") {
+                    window.location.href = '../Student/Dashboard/homepage.html'; 
+                } else if (role === "teacher") {
+                    window.location.href = '../Teachers/homepage.html';
+                } else if (role === "registrar") {
+                    // This redirects to the Dashboard.html you provided
+                    window.location.href = '../Registrar/Dashboard.html'; 
+                }
+            } else {
+                alert('Invalid credentials. Check your ID, Password, and Role.');
+            }
+        });
+    </script>
+</body>
+</html>

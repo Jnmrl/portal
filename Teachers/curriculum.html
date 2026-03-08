@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum | Teacher Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: linear-gradient(180deg, #0067ba, #5700de);
+            --accent-bg: #f0f4f8; 
+            --white: #ffffff;
+            --primary: #0067ba;
+            --text-main: #2d3436;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--accent-bg);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        /* --- SHARED SIDEBAR & HEADER --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050;
+            align-items: flex-start;
+        }
+
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+
+        .top-header {
+            margin-left: 260px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 2rem; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px; 
+        }
+
+        main { 
+            margin-left: 260px; 
+            height: calc(100vh - 60px); 
+            padding: 2rem; 
+            overflow-y: auto; 
+        }
+
+        /* --- MODULE CARD STYLES --- */
+        .module-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 30px rgba(0,103,186,0.15);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .btn-module {
+            flex: 1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 8px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .lesson-counter {
+            background: #f1f7ff;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        @media (max-width: 991px) {
+            html, body { overflow: auto; }
+            .navbar { width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
+            main { margin-left: 0; height: auto; padding: 1rem; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; }
+            .desktop-only { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold" href="homepage.html">
+                    <i class="fas fa-chalkboard-teacher me-2"></i> 
+                    <span class="desktop-only">Teacher Portal</span>
+                    <span class="d-lg-none">Portal</span> 
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="homepage.html"><i class="fas fa-chart-line me-2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="student.html"><i class="fas fa-users me-2"></i> My Students</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="curriculum.html"><i class="fas fa-book-open me-2"></i> Curriculum</a></li>
+                    <li class="nav-item"><a class="nav-link" href="attendance.html"><i class="fas fa-calendar-check me-2"></i> Attendance</a></li>
+                    <li class="nav-item mt-lg-5"><a class="nav-link text-danger" href="javascript:void(0)" onclick="handleLogout()"><i class="fas fa-power-off me-2"></i> Log out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="top-header">
+        <a href="profile.html" class="d-flex align-items-center gap-2 text-decoration-none" style="cursor: pointer;">
+            <div class="text-end d-none d-sm-block">
+                <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.8rem;">Professor</p>
+                <small class="text-muted" id="headerID" style="font-size: 0.65rem;">Portal ID</small>
+            </div>
+            <img src="" id="headerProfilePic" class="rounded-circle border border-primary p-1" width="32" height="32" alt="User Profile">
+        </a>
+    </header>
+
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-0" style="color: var(--primary);">Academic Curriculum</h2>
+                <p class="text-muted small">Manage your lesson plans and subject modules</p>
+            </div>
+            <button class="btn btn-primary btn-sm rounded-3 px-3 fw-bold" onclick="alert('Module Creator Opening...')">
+                <i class="fas fa-plus me-2"></i>New Module
+            </button>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card" onclick="toggleDetails('mil')">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-primary mb-2">MIL</span>
+                            <h5 class="fw-bold mb-1">Media & Information</h5>
+                        </div>
+                        <span class="lesson-counter">12 Lessons</span>
+                    </div>
+                    <p class="small text-muted mb-0"><i class="fas fa-book-reader me-2"></i>Current: Digital Literacy</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline-primary btn-module" onclick="event.stopPropagation(); alert('Opening MIL Syllabus...')">View Syllabus</button>
+                        <button class="btn btn-light btn-module" onclick="event.stopPropagation(); alert('Opening MIL Resources...')"><i class="fas fa-folder-open me-1"></i>Files</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card" onclick="toggleDetails('entrep')">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-success mb-2">ENTREP</span>
+                            <h5 class="fw-bold mb-1">Entrepreneurship</h5>
+                        </div>
+                        <span class="lesson-counter">8 Lessons</span>
+                    </div>
+                    <p class="small text-muted mb-0"><i class="fas fa-chart-line me-2"></i>Current: Market Research</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline-success btn-module" onclick="event.stopPropagation(); alert('Opening Entrep Syllabus...')">View Syllabus</button>
+                        <button class="btn btn-light btn-module" onclick="event.stopPropagation(); alert('Opening Entrep Resources...')"><i class="fas fa-folder-open me-1"></i>Files</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card" onclick="toggleDetails('css')">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-warning text-dark mb-2">CSS</span>
+                            <h5 class="fw-bold mb-1">Computer Systems</h5>
+                        </div>
+                        <span class="lesson-counter">15 Lessons</span>
+                    </div>
+                    <p class="small text-muted mb-0"><i class="fas fa-network-wired me-2"></i>Current: Network Config</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline-warning btn-module text-dark" onclick="event.stopPropagation(); alert('Opening CSS Syllabus...')">View Syllabus</button>
+                        <button class="btn btn-light btn-module" onclick="event.stopPropagation(); alert('Opening CSS Resources...')"><i class="fas fa-folder-open me-1"></i>Files</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- 1. HEADER DATA SYNC ---
+        function loadHeaderData() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) {
+                window.location.href = '../Login Page/login.html';
+                return;
+            }
+
+            document.getElementById('headerName').innerText = user.name;
+            document.getElementById('headerID').innerText = "ID: " + user.portalId;
+
+            const headerPic = document.getElementById('headerProfilePic');
+            if (user.profilePic) {
+                headerPic.src = user.profilePic;
+            } else {
+                const initials = user.name.split(' ').map(n => n[0]).join('+');
+                headerPic.src = `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
+            }
+        }
+
+        // --- 2. LOGOUT ---
+        function handleLogout() {
+            if(confirm("Confirm Log out?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../Login Page/login.html';
+            }
+        }
+
+        // --- 3. CURRICULUM INTERACTION ---
+        function toggleDetails(subject) {
+            console.log("Subject selected: " + subject);
+        }
+
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', loadHeaderData);
+    </script>
+</body>
+</html>

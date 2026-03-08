@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar | Academic Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: linear-gradient(180deg, #0067ba, #5700de);
+            --accent-bg: #f0f4f8; 
+            --white: #ffffff;
+            --primary: #0067ba;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        body { background-color: var(--accent-bg); font-family: 'Inter', sans-serif; color: #2d3436; overflow-x: hidden; }
+
+        /* --- SIDEBAR & HEADER --- */
+        .sidebar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; transition: 0.3s; z-index: 1100; }
+        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin: 0.2rem 1rem; transition: 0.3s; display: flex; align-items: center; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+        
+        .top-header { margin-left: 260px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 1.5rem; display: flex; justify-content: flex-end; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; height: 65px; transition: 0.3s; }
+        
+        main { margin-left: 260px; padding: 2rem; transition: 0.3s; }
+
+        .record-card { background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); }
+
+        /* --- TAB STYLING --- */
+        .nav-pills .nav-link { border-radius: 10px; color: var(--primary); font-weight: 600; cursor: pointer; }
+        .nav-pills .nav-link.active { background-color: var(--primary); color: white; }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 991px) {
+            .sidebar { margin-left: -260px; }
+            .sidebar.active { margin-left: 0; }
+            .top-header, main { margin-left: 0; }
+            .mobile-toggle { display: block !important; }
+        }
+        
+        .mobile-toggle { display: none; position: absolute; left: 15px; top: 18px; font-size: 1.5rem; color: var(--primary); cursor: pointer; z-index: 1200; }
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; }
+        .sidebar-overlay.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="p-4 d-flex justify-content-between align-items-center">
+            <h4 class="text-white fw-bold mb-0"><i class="fas fa-university me-2"></i>Registrar</h4>
+        </div>
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item">
+                <a class="nav-link" href="Dashboard.html">
+                    <i class="fas fa-th-large me-3"></i>Overview
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Enrollment.html">
+                    <i class="fas fa-user-plus me-3"></i>Enrollment
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Request.html">
+                    <i class="fas fa-file-invoice me-3"></i>Requests
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="Records.html">
+                    <i class="fas fa-clipboard-list me-3"></i>Records
+                </a>
+            </li>
+            <li class="nav-item mt-5">
+                <a class="nav-link text-warning" href="javascript:void(0)" onclick="handleLogout()">
+                    <i class="fas fa-power-off me-3"></i>Log out
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <header class="top-header">
+        <div class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        
+        <a href="Profile.html" class="d-flex align-items-center gap-3 text-decoration-none" style="cursor:pointer;">
+            <div class="text-end d-none d-sm-block">
+                <p class="fw-bold mb-0 text-dark" id="headerName">Registrar Officer</p>
+                <small class="text-muted" id="headerID">ID: REG-2026</small>
+            </div>
+            <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Registrar+Officer&background=0067ba&color=fff" 
+                 class="rounded-circle border border-primary p-1" width="40" height="40" alt="Profile" style="object-fit: cover;">
+        </a>
+    </header>
+
+    <main>
+        <div class="d-md-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-primary">Academic Records</h2>
+                <p class="text-muted">Database for Students and Faculty.</p>
+            </div>
+            <ul class="nav nav-pills bg-white p-2 rounded-pill shadow-sm" id="pills-tab">
+                <li class="nav-item"><button class="nav-link active" id="btnStudents" onclick="switchTable('students')">Students</button></li>
+                <li class="nav-item"><button class="nav-link" id="btnTeachers" onclick="switchTable('teachers')">Teachers</button></li>
+            </ul>
+        </div>
+
+        <div class="record-card">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead id="tableHead"></thead>
+                    <tbody id="recordBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal fade" id="profileModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content" style="border-radius: 20px;">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="profileContent"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- DATA ---
+        const studentData = [
+            { name: "Juan Dela Cruz", id: "123456789012", strand: "ICT", section: "12-ICT-A", status: "Enrolled", gwa: "94.5" },
+            { name: "Maria Santos", id: "987654321098", strand: "ABM", section: "11-ABM-B", status: "Enrolled", gwa: "92.0" },
+            { name: "Alex Lim", id: "112233445566", strand: "HUMSS", section: "12-HUMSS-C", status: "Enrolled", gwa: "89.8" },
+            { name: "Elena Gomez", id: "778899001122", strand: "HE", section: "11-HE-A", status: "Enrolled", gwa: "91.2" }
+        ];
+
+        const teacherData = [
+            { 
+                name: "Prof. Alberto Reyes", 
+                id: "TCH-2024-001", 
+                dept: "Technical-Vocational", 
+                sections: ["12-ICT-A", "11-ICT-B"], 
+                subjects: ["Media & Information Literacy", "Computer Programming"],
+                status: "Active"
+            },
+            { 
+                name: "Ms. Sofia Rivera", 
+                id: "TCH-2022-045", 
+                dept: "General Education", 
+                sections: ["12-HUMSS-C", "11-ABM-B"], 
+                subjects: ["Oral Communication", "Creative Writing"],
+                status: "Active"
+            }
+        ];
+
+        let currentView = 'students';
+
+        function switchTable(view) {
+            currentView = view;
+            document.getElementById('btnStudents').classList.toggle('active', view === 'students');
+            document.getElementById('btnTeachers').classList.toggle('active', view === 'teachers');
+            renderTable();
+        }
+
+        function renderTable() {
+            const head = document.getElementById('tableHead');
+            const body = document.getElementById('recordBody');
+
+            if (currentView === 'students') {
+                head.innerHTML = `<tr class="text-muted small"><th>Name</th><th>LRN</th><th>Strand</th><th>Section</th><th>Action</th></tr>`;
+                body.innerHTML = studentData.map((s, i) => `
+                    <tr>
+                        <td class="fw-bold">${s.name}</td>
+                        <td><code>${s.id}</code></td>
+                        <td><span class="badge bg-info text-dark">${s.strand}</span></td>
+                        <td>${s.section}</td>
+                        <td><button class="btn btn-sm btn-outline-primary" onclick="viewStudent(${i})">View Profile</button></td>
+                    </tr>
+                `).join('');
+            } else {
+                head.innerHTML = `<tr class="text-muted small"><th>Teacher Name</th><th>Employee ID</th><th>Dept</th><th>Status</th><th>Action</th></tr>`;
+                body.innerHTML = teacherData.map((t, i) => `
+                    <tr>
+                        <td class="fw-bold">${t.name}</td>
+                        <td><code>${t.id}</code></td>
+                        <td>${t.dept}</td>
+                        <td><span class="badge bg-success">${t.status}</span></td>
+                        <td><button class="btn btn-sm btn-primary" onclick="viewTeacher(${i})">View Handling</button></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function viewStudent(i) {
+            const s = studentData[i];
+            document.getElementById('profileContent').innerHTML = `
+                <div class="text-center mb-4">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&size=100&background=random" class="rounded-circle shadow-sm mb-2">
+                    <h4 class="fw-bold mb-0">${s.name}</h4>
+                    <p class="text-muted small">Student | ${s.id}</p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6"><div class="p-3 bg-light rounded-4 border"><small class="text-muted d-block">Strand</small><span class="fw-bold">${s.strand}</span></div></div>
+                    <div class="col-6"><div class="p-3 bg-light rounded-4 border"><small class="text-muted d-block">Section</small><span class="fw-bold">${s.section}</span></div></div>
+                    <div class="col-12 text-center"><p class="mb-0 text-muted">Academic Performance GWA: <span class="text-primary fw-bold">${s.gwa}</span></p></div>
+                </div>
+            `;
+            new bootstrap.Modal(document.getElementById('profileModal')).show();
+        }
+
+        function viewTeacher(i) {
+            const t = teacherData[i];
+            document.getElementById('profileContent').innerHTML = `
+                <div class="text-center mb-4">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&size=100&background=0067ba&color=fff" class="rounded-circle shadow-sm mb-2">
+                    <h4 class="fw-bold mb-0">${t.name}</h4>
+                    <p class="text-muted small">Faculty | ${t.id}</p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-4 border">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-chalkboard me-2"></i>Handled Sections</h6>
+                            <ul class="list-unstyled mb-0">${t.sections.map(sec => `<li><i class="fas fa-check text-success me-2"></i>${sec}</li>`).join('')}</ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-4 border">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-book me-2"></i>Assigned Subjects</h6>
+                            <ul class="list-unstyled mb-0">${t.subjects.map(sub => `<li><i class="fas fa-bookmark text-warning me-2"></i>${sub}</li>`).join('')}</ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            new bootstrap.Modal(document.getElementById('profileModal')).show();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function handleLogout() {
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+            
+            // SHARED USER SYNC
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                const nameEl = document.getElementById('headerName');
+                const avatarEl = document.getElementById('headerAvatar');
+
+                if (nameEl && user.name) nameEl.innerText = user.name;
+                if (avatarEl && user.profilePic) avatarEl.src = user.profilePic;
+            }
+        });
+
+         function handleLogout() {
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../Login Page/login.html';
+            }
+        }
+    </script>
+</body>
+</html>

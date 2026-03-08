@@ -17,44 +17,43 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        body {
+        html, body {
+            height: 100%;
+            overflow: hidden;
             background-color: var(--accent-bg);
             font-family: 'Inter', 'Segoe UI', sans-serif;
-            color: var(--text-main);
-            overflow-x: hidden;
         }
 
-        /* --- SIDEBAR --- */
-        .sidebar { 
+        /* --- SHARED SIDEBAR & HEADER (Matching Curriculum UI) --- */
+        .navbar { 
             background: var(--sidebar-bg); 
             height: 100vh; 
             position: fixed; 
             width: 260px; 
-            transition: all 0.3s;
-            z-index: 1100;
+            padding: 2rem 1.2rem; 
+            z-index: 1050;
+            align-items: flex-start;
         }
 
         .nav-link { 
             color: rgba(255,255,255,0.7) !important; 
             padding: 12px 15px; 
             border-radius: 12px; 
-            margin: 0.2rem 1rem;
-            transition: 0.3s; 
+            margin-bottom: 5px; 
             display: flex;
             align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
         }
 
-        .nav-link:hover, .nav-link.active { 
-            background: rgba(255,255,255,0.15); 
-            color: #fff !important; 
-        }
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff !important; }
+        .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
 
-        /* --- TOP HEADER --- */
         .top-header {
             margin-left: 260px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 0 1.5rem; 
+            padding: 0 2rem; 
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -62,24 +61,17 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            height: 65px; 
+            height: 60px; 
         }
 
-        .header-profile-link {
-            transition: opacity 0.2s ease;
-            cursor: pointer;
-        }
-        .header-profile-link:hover {
-            opacity: 0.8;
-        }
-
-        /* --- MAIN AREA --- */
         main { 
             margin-left: 260px; 
+            height: calc(100vh - 60px); 
             padding: 2rem; 
-            transition: all 0.3s;
+            overflow-y: auto; 
         }
 
+        /* --- DASHBOARD SPECIFIC --- */
         .dashboard-card {
             background: var(--white);
             border-radius: 20px;
@@ -101,76 +93,81 @@
         }
         .progress-value { position: relative; font-weight: bold; font-size: 1.4rem; color: var(--secondary-accent); }
 
-        .lecture-scroll-container { max-height: 300px; overflow-y: auto; }
+        .lecture-scroll-container { max-height: 250px; overflow-y: auto; }
 
         @media (max-width: 991px) {
-            .sidebar { margin-left: -260px; }
-            .sidebar.active { margin-left: 0; }
-            .top-header, main { margin-left: 0; }
-            .mobile-toggle { display: block !important; }
+            html, body { overflow: auto; }
+            .navbar { width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
+            main { margin-left: 0; height: auto; padding: 1rem; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; }
+            .desktop-only { display: none; }
         }
-
-        .mobile-toggle { display: none; position: absolute; left: 15px; top: 18px; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="p-4">
-            <h4 class="text-white fw-bold"><i class="fas fa-chalkboard-teacher me-2"></i>Portal</h4>
-        </div>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-chart-line me-3"></i>Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="student.html"><i class="fas fa-users me-3"></i>My Students</a></li>
-            <li class="nav-item"><a class="nav-link" href="curriculum.html"><i class="fas fa-book-open me-3"></i>Curriculum</a></li>
-            <li class="nav-item"><a class="nav-link" href="attendance.html"><i class="fas fa-calendar-check me-3"></i>Attendance</a></li>
-            <li class="nav-item mt-5">
-                <a class="nav-link text-warning" href="javascript:void(0)" onclick="handleLogout()">
-                    <i class="fas fa-power-off me-3"></i>Log out
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold" href="index.html">
+                    <i class="fas fa-chalkboard-teacher me-2"></i> 
+                    <span class="desktop-only">Teacher Portal</span>
+                    <span class="d-lg-none">Portal</span> 
                 </a>
-            </li>
-        </ul>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-chart-line me-2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="student.html"><i class="fas fa-users me-2"></i> My Students</a></li>
+                    <li class="nav-item"><a class="nav-link" href="curriculum.html"><i class="fas fa-book-open me-2"></i> Curriculum</a></li>
+                    <li class="nav-item"><a class="nav-link" href="attendance.html"><i class="fas fa-calendar-check me-2"></i> Attendance</a></li>
+                    <li class="nav-item mt-lg-5"><a class="nav-link text-danger" href="javascript:void(0)" onclick="handleLogout()"><i class="fas fa-power-off me-2"></i> Log out</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <header class="top-header">
-        <div class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        
-        <a href="profile.html" class="d-flex align-items-center gap-3 text-decoration-none header-profile-link">
-            <div class="text-end">
-                <p class="fw-bold mb-0 text-dark" id="headerName">User Name</p>
-                <small class="text-muted" id="headerID">ID: ---</small>
+        <a href="profile.html" class="d-flex align-items-center gap-2 text-decoration-none">
+            <div class="text-end d-none d-sm-block">
+                <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.8rem;">Professor</p>
+                <small class="text-muted" id="headerID" style="font-size: 0.65rem;">ID: ---</small>
             </div>
-            <img id="headerAvatar" src="" class="rounded-circle border border-primary p-1" width="40" height="40" alt="Profile" style="object-fit: cover;">
+            <img id="headerAvatar" src="" class="rounded-circle border border-primary p-1" width="32" height="32" alt="Profile" style="object-fit: cover;">
         </a>
     </header>
 
     <main>
         <div class="mb-4">
-            <h2 class="fw-bold text-primary">Faculty Overview</h2>
-            <p class="text-muted" id="currentDateDisplay"></p>
+            <h2 class="fw-bold text-primary mb-0">Faculty Overview</h2>
+            <p class="text-muted small" id="currentDateDisplay"></p>
         </div>
 
         <div class="row g-4">
             <div class="col-md-6 col-lg-4">
                 <div class="dashboard-card text-center">
-                    <h6 class="fw-bold text-muted small uppercase">Grading Progress</h6>
+                    <h6 class="fw-bold text-muted small text-uppercase">Grading Progress</h6>
                     <div class="grading-progress" id="gradingCircle">
                         <span class="progress-value">65%</span>
                     </div>
-                    <p class="text-muted mb-0"><strong>12</strong> assignments pending</p>
+                    <p class="text-muted mb-0 small"><strong>12</strong> assignments pending</p>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-4">
                 <div class="dashboard-card">
-                    <h6 class="fw-bold text-muted small mb-3">TODAY'S LECTURES</h6>
+                    <h6 class="fw-bold text-muted small mb-3 text-uppercase">Today's Lectures</h6>
                     <div class="lecture-scroll-container" id="lectureList"></div>
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="dashboard-card">
-                    <h6 class="fw-bold text-primary small mb-3">QUICK ANNOUNCEMENT</h6>
+                    <h6 class="fw-bold text-primary small mb-3 text-uppercase">Quick Announcement</h6>
                     <form id="announcementForm">
                         <div class="mb-2">
                             <select class="form-select form-select-sm" id="targetClass" required>
@@ -188,17 +185,17 @@
                 </div>
             </div>
 
-            <div class="col-12 mb-5">
-                <div class="dashboard-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-bold text-muted small mb-0">RECENT SUBMISSIONS</h6>
-                        <span class="badge bg-primary" id="subCount">3</span>
+            <div class="col-12 mb-4">
+                <div class="dashboard-card p-0 overflow-hidden">
+                    <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+                        <h6 class="fw-bold text-muted small mb-0 text-uppercase">Recent Submissions</h6>
+                        <span class="badge bg-primary" id="subCount">0</span>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
                                 <tr class="text-muted small">
-                                    <th>Student</th>
+                                    <th class="ps-3">Student</th>
                                     <th>Subject</th>
                                     <th>Status</th>
                                     <th class="text-center">Action</th>
@@ -212,30 +209,23 @@
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- 1. AUTH GUARD & INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             const userJson = localStorage.getItem('currentUser');
-            
             if (!userJson) {
                 window.location.href = '../index.html';
                 return;
             }
 
             const user = JSON.parse(userJson);
-            
-            // Populate Header Data
             document.getElementById('headerName').innerText = user.name;
             document.getElementById('headerID').innerText = `ID: ${user.portalId}`;
             
-            // --- FIX FOR PROFILE PICTURE ---
             const avatarImg = document.getElementById('headerAvatar');
-            
-            // Check if user has an uploaded profile picture in the object
             if (user.profilePic) {
                 avatarImg.src = user.profilePic;
             } else {
-                // Fallback to UI Avatars if no picture is uploaded
                 const initials = user.name.split(' ').map(n => n[0]).join('+');
                 avatarImg.src = `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
             }
@@ -263,8 +253,7 @@
                 { time: '02:00 PM', subject: 'Entrep', section: 'Quezon' }
             ];
 
-            const lectureList = document.getElementById('lectureList');
-            lectureList.innerHTML = lectures.map(l => `
+            document.getElementById('lectureList').innerHTML = lectures.map(l => `
                 <div class="p-2 border-start border-primary border-4 bg-light mb-2 rounded shadow-sm">
                     <div class="d-flex justify-content-between">
                         <span class="small fw-bold">${l.subject}</span>
@@ -282,7 +271,7 @@
 
             document.getElementById('submissionTable').innerHTML = subs.map(s => `
                 <tr>
-                    <td class="fw-bold small">${s.name}</td>
+                    <td class="ps-3 fw-bold small">${s.name}</td>
                     <td><span class="small">${s.sub}</span></td>
                     <td><span class="badge ${s.status === 'Graded' ? 'bg-success' : 'bg-warning'}">${s.status}</span></td>
                     <td class="text-center"><button class="btn btn-sm btn-outline-primary py-0">View</button></td>
@@ -291,14 +280,9 @@
             document.getElementById('subCount').innerText = subs.length;
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
         document.getElementById('announcementForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const subject = document.getElementById('targetClass').value;
-            alert(`Announcement posted to all students in ${subject}!`);
+            alert(`Announcement posted to ${document.getElementById('targetClass').value}!`);
             e.target.reset();
         });
     </script>

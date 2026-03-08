@@ -12,128 +12,235 @@
             --accent-bg: #f0f4f8; 
             --white: #ffffff;
             --primary: #0067ba;
+            --text-main: #2d3436;
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        body { background-color: var(--accent-bg); font-family: 'Inter', sans-serif; color: #2d3436; overflow-x: hidden; }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--accent-bg);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
 
-        /* --- SIDEBAR & HEADER (Matches Enrollment) --- */
-        .sidebar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; transition: 0.3s; z-index: 1100; }
-        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin: 0.2rem 1rem; transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
-        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
-        
-        .top-header { margin-left: 260px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 1.5rem; display: flex; justify-content: flex-end; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; height: 65px; transition: 0.3s; }
-        
-        main { margin-left: 260px; padding: 2rem; transition: 0.3s; }
+        /* --- NAVIGATION --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050;
+            align-items: flex-start;
+        }
 
-        /* --- DASHBOARD CARDS --- */
-        .stat-card { background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); height: 100%; transition: 0.3s; }
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff !important; }
+        .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+
+        .top-header {
+            margin-left: 260px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 2rem; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px; 
+        }
+
+        main { 
+            margin-left: 260px; 
+            height: calc(100vh - 60px); 
+            padding: 2rem; 
+            overflow-y: auto; 
+        }
+
+        /* --- STAT CARDS --- */
+        .stat-card { 
+            background: var(--white); 
+            border-radius: 20px; 
+            padding: 1.5rem; 
+            box-shadow: var(--shadow); 
+            border: none; 
+            transition: 0.3s;
+            height: 100%;
+        }
         .stat-card:hover { transform: translateY(-5px); }
         .stat-icon { width: 48px; height: 48px; border-radius: 12px; background: #f0f7ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 1rem; }
 
-        /* --- MOBILE RESPONSIVENESS --- */
-        @media (max-width: 991px) {
-            .sidebar { margin-left: -260px; }
-            .sidebar.active { margin-left: 0; }
-            .top-header, main { margin-left: 0; }
-            .mobile-toggle { display: block !important; }
-        }
-        
-        .mobile-toggle { display: none; position: absolute; left: 15px; top: 18px; font-size: 1.5rem; color: var(--primary); cursor: pointer; z-index: 1200; }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+        /* --- ACTIVITY FEED --- */
+        .activity-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1050;
         }
-        .sidebar-overlay.active { display: block; }
+        .activity-item {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 20px;
+            border-left: 2px solid #f0f4f8;
+            margin-left: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* --- MOBILE ADAPTATIONS --- */
+        @media (max-width: 991px) {
+            html, body { overflow: auto; }
+            .navbar { width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
+            main { margin-left: 0; height: auto; padding: 1rem; overflow: visible; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; }
+            .desktop-only { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-    <nav class="sidebar" id="sidebar">
-        <div class="p-4 d-flex justify-content-between align-items-center">
-            <h4 class="text-white fw-bold mb-0"><i class="fas fa-university me-2"></i>Registrar</h4>
-        </div>
-        <ul class="nav flex-column mt-3">
-            <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-th-large me-3"></i>Overview</a></li>
-            <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-3"></i>Enrollment</a></li>
-            <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-invoice me-3"></i>Requests</a></li>
-            <li class="nav-item"><a class="nav-link" href="Records.html"><i class="fas fa-clipboard-list me-3"></i>Records</a></li>
-            <li class="nav-item mt-5">
-                <a class="nav-link text-warning" href="javascript:void(0)" onclick="handleLogout()">
-                    <i class="fas fa-power-off me-3"></i>Log out
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold" href="index.html">
+                    <i class="fas fa-university me-2"></i> 
+                    <span class="desktop-only">Registrar Portal</span>
+                    <span class="d-lg-none">Portal</span>
                 </a>
-            </li>
-        </ul>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-th-large me-2"></i> Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-2"></i> Enrollment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-invoice me-2"></i> Requests</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Records.html"><i class="fas fa-clipboard-list me-2"></i> Records</a></li>
+                    <li class="nav-item mt-lg-5">
+                        <a class="nav-link text-danger" href="javascript:void(0)" onclick="handleLogout()">
+                            <i class="fas fa-power-off me-2"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <header class="top-header">
-        <div class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        <a href="Profile.html" class="d-flex align-items-center gap-3 text-decoration-none">
+        <a href="Profile.html" class="d-flex align-items-center gap-2 text-decoration-none" style="cursor: pointer;">
             <div class="text-end d-none d-sm-block">
-                <p class="fw-bold mb-0 text-dark" id="headerName">Registrar Officer</p>
-                <small class="text-muted" id="headerID">ID: REG-2026</small>
+                <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.8rem;">Registrar Officer</p>
+                <small class="text-muted" id="headerID" style="font-size: 0.65rem;">ID: REG-2026</small>
             </div>
-            <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Registrar+Officer&background=0067ba&color=fff" 
-                 class="rounded-circle border border-primary p-1" width="40" height="40" alt="Profile">
+            <img src="" id="headerProfilePic" class="rounded-circle border border-primary p-1" width="32" height="32" alt="Profile">
         </a>
     </header>
 
     <main>
-        <div class="mb-4">
-            <h2 class="fw-bold text-primary">System Overview</h2>
-            <p class="text-muted">Real-time metrics for enrollment and documentation.</p>
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="fw-bold mb-0" style="color: var(--primary);">System Overview</h3>
+                <p class="text-muted small">Real-time metrics for enrollment and documentation.</p>
+            </div>
+            <div class="text-end d-none d-md-block">
+                <h5 id="liveClock" class="fw-bold mb-0 text-dark">00:00:00 AM</h5>
+                <p class="small text-muted mb-0" id="liveDate">March 2026</p>
+            </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 mb-4">
             <div class="col-md-4">
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-users"></i></div>
                     <h6 class="text-muted small fw-bold">TOTAL STUDENTS</h6>
                     <h3 class="fw-bold" id="totalStudentsCount">0</h3>
-                    <small class="text-success"><i class="fas fa-arrow-up"></i> Live Tracking</small>
+                    <small class="text-success small"><i class="fas fa-sync-alt fa-spin me-1"></i> Live Tracking</small>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-icon" style="background: #fff8eb; color: #ffa800;"><i class="fas fa-clock"></i></div>
                     <h6 class="text-muted small fw-bold">PENDING REQUESTS</h6>
                     <h3 class="fw-bold">12</h3>
-                    <small class="text-warning">Action required</small>
+                    <small class="text-warning small"><i class="fas fa-exclamation-circle me-1"></i> Action required</small>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-icon" style="background: #e7fbf3; color: #2ecc71;"><i class="fas fa-check-circle"></i></div>
                     <h6 class="text-muted small fw-bold">PROCESSED TODAY</h6>
                     <h3 class="fw-bold">24</h3>
-                    <small class="text-muted">Documents released</small>
+                    <small class="text-muted small"><i class="fas fa-print me-1"></i> Documents released</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="activity-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0"><i class="fas fa-history me-2 text-primary"></i>Recent Transactions</h5>
+                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="location.href='Request.html'">View All</button>
+                    </div>
+                    <div id="activityContainer">
+                        <div class="activity-item">
+                            <div>
+                                <p class="mb-0 fw-bold">New Student Enrolled</p>
+                                <small class="text-muted">A new record for ICT-12 has been added to the database.</small>
+                                <br><small class="text-primary" style="font-size: 0.7rem;">2 minutes ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div>
+                                <p class="mb-0 fw-bold">Transcript Request</p>
+                                <small class="text-muted">LRN: 1234567890 has requested a copy of Form 137.</small>
+                                <br><small class="text-primary" style="font-size: 0.7rem;">1 hour ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item" style="border-left-color: transparent;">
+                            <div>
+                                <p class="mb-0 fw-bold">System Maintenance</p>
+                                <small class="text-muted">Automated backup of student records completed successfully.</small>
+                                <br><small class="text-primary" style="font-size: 0.7rem;">4 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-12 mt-4">
-                <div class="stat-card">
-                    <h6 class="fw-bold text-muted small mb-4">RECENTLY ENROLLED STUDENTS</h6>
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead class="table-light">
-                                <tr class="small text-muted">
-                                    <th>Name</th><th>Strand</th><th>Grade</th><th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="recentEnrollmentBody">
-                                </tbody>
-                        </table>
+            <div class="col-lg-4">
+                <div class="activity-card bg-primary text-white">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-bullhorn me-2"></i>Registrar Notice</h5>
+                    <p class="small opacity-75">Graduation clearance for Batch 2026 starts on Monday. Please ensure all student records are updated.</p>
+                    <hr class="opacity-25">
+                    <div class="d-grid">
+                        <button class="btn btn-light btn-sm fw-bold rounded-pill" onclick="location.href='Records.html'">Verify Records Now</button>
                     </div>
                 </div>
             </div>
@@ -142,50 +249,46 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sidebar Toggle
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+            updateDashboardMetrics();
+            startClock();
+        });
+
+        function loadUserData() {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                document.getElementById('headerName').innerText = user.name;
+                document.getElementById('headerID').innerText = "ID: " + (user.portalId || "REG-2026");
+                
+                const initials = user.name.split(' ').map(n => n[0]).join('+');
+                document.getElementById('headerProfilePic').src = user.profilePic || `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
+            } else {
+                window.location.href = '../index.html';
+            }
         }
 
-        // Logout
+        function updateDashboardMetrics() {
+            const enrolled = JSON.parse(localStorage.getItem('portal_students')) || [];
+            const defaultCount = 4; 
+            document.getElementById('totalStudentsCount').innerText = enrolled.length + defaultCount;
+        }
+
+        function startClock() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                document.getElementById('liveDate').innerText = now.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' });
+            }, 1000);
+        }
+
         function handleLogout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem('currentUser');
                 window.location.href = '../index.html';
             }
         }
-
-        // Data Sync
-        document.addEventListener('DOMContentLoaded', () => {
-            const students = JSON.parse(localStorage.getItem('enrolledStudents')) || [];
-            document.getElementById('totalStudentsCount').innerText = students.length;
-
-            const recentBody = document.getElementById('recentEnrollmentBody');
-            
-            if (students.length === 0) {
-                recentBody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">No recent enrollments.</td></tr>';
-            } else {
-                // Show last 5 enrolled
-                const recent = students.slice(-5).reverse();
-                recentBody.innerHTML = recent.map(s => `
-                    <tr>
-                        <td class="fw-bold">${s.name}</td>
-                        <td><span class="badge bg-light text-primary border">${s.strand}</span></td>
-                        <td>${s.grade}</td>
-                        <td class="text-muted small">${s.dateEnrolled || 'N/A'}</td>
-                    </tr>
-                `).join('');
-            }
-
-            // Sync Header User
-            const userJson = localStorage.getItem('currentUser');
-            if (userJson) {
-                const user = JSON.parse(userJson);
-                if (user.name) document.getElementById('headerName').innerText = user.name;
-                if (user.profilePic) document.getElementById('headerAvatar').src = user.profilePic;
-            }
-        });
     </script>
 </body>
 </html>

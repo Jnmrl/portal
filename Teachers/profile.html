@@ -15,19 +15,62 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        html, body { height: 100%; overflow: hidden; background-color: var(--accent-bg); font-family: 'Inter', sans-serif; }
+        html, body { 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: var(--accent-bg); 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+        }
 
-        /* --- NAVIGATION --- */
-        .navbar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; padding: 2rem 1.2rem; z-index: 1050; align-items: flex-start; }
-        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin-bottom: 5px; display: flex; align-items: center; transition: 0.3s; }
+        /* --- NAVIGATION (Shared UI) --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050; 
+            align-items: flex-start; 
+        }
+        
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex; 
+            align-items: center; 
+            transition: 0.3s; 
+            text-decoration: none;
+        }
+        
         .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff !important; }
         .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
         
-        .top-header { margin-left: 260px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 2rem; display: flex; justify-content: flex-end; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; height: 60px; }
-        main { margin-left: 260px; height: calc(100vh - 60px); padding: 2rem; overflow-y: auto; }
+        .top-header { 
+            margin-left: 260px; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            padding: 0 2rem; 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            box-shadow: var(--shadow); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            height: 60px; 
+        }
 
-        /* --- INTERACTIVE PROFILE ELEMENTS --- */
-        .profile-card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow); border: none; transition: 0.3s; }
+        main { 
+            margin-left: 260px; 
+            height: calc(100vh - 60px); 
+            padding: 2rem; 
+            overflow-y: auto; 
+        }
+
+        /* --- PROFILE UI --- */
+        .profile-card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow); border: none; }
         .profile-img-container { position: relative; width: 130px; margin: 0 auto 1.5rem; }
         .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); padding: 3px; background: white; }
         
@@ -38,19 +81,19 @@
             display: flex; align-items: center; justify-content: center; 
             cursor: pointer; border: 2px solid white; transition: 0.2s;
         }
-        .upload-label:hover { transform: scale(1.1); background: #00569d; }
         #pfp-input { display: none; }
 
         .editable-field { transition: 0.3s; border: 2px solid transparent; }
         .editing .editable-field { background: #f1f7ff !important; border-color: var(--primary) !important; }
-        
         .stat-box { background: #f8faff; border-radius: 15px; padding: 1rem; text-align: center; }
 
+        /* --- MOBILE ADAPTATION --- */
         @media (max-width: 991px) {
             html, body { overflow: auto; }
             .navbar { width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; }
-            .top-header { margin-left: 0; margin-top: 55px; }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
             main { margin-left: 0; height: auto; padding: 1rem; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; }
             .desktop-only { display: none; }
         }
     </style>
@@ -60,10 +103,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
         <div class="container-fluid flex-lg-column">
             <div class="d-flex justify-content-between w-100 align-items-center">
-                <a class="navbar-brand fw-bold" href="homepage.html">
+                <a class="navbar-brand fw-bold" href="index.html">
                     <i class="fas fa-chalkboard-teacher me-2"></i> 
                     <span class="desktop-only">Teacher Portal</span>
+                    <span class="d-lg-none">Portal</span> 
                 </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
             <div class="collapse navbar-collapse w-100" id="sidebarMenu">
                 <ul class="navbar-nav flex-column w-100 mt-lg-4">
@@ -83,12 +130,12 @@
                 <p class="fw-bold mb-0 text-dark" style="font-size: 0.8rem;" id="header-name-text">User Name</p>
                 <small class="text-muted" style="font-size: 0.65rem;" id="header-id-text">ID: ---</small>
             </div>
-            <img id="header-avatar" src="" class="rounded-circle border border-primary p-1" width="32" height="32" alt="User Profile">
+            <img id="header-avatar" src="" class="rounded-circle border border-primary p-1" width="32" height="32" alt="Profile">
         </div>
     </header>
 
     <main>
-        <div id="profile-container" class="row g-4">
+        <div class="row g-4">
             <div class="col-lg-4">
                 <div class="profile-card text-center">
                     <div class="profile-img-container">
@@ -103,8 +150,8 @@
                     <p id="display-title" class="text-muted small">Faculty Member</p>
                     
                     <div class="row g-2 my-4">
-                        <div class="col-6"><div class="stat-box"><h5 class="fw-bold mb-0">0</h5><small>Students</small></div></div>
-                        <div class="col-6"><div class="stat-box"><h5 class="fw-bold mb-0">0</h5><small>Sections</small></div></div>
+                        <div class="col-6"><div class="stat-box"><h5 class="fw-bold mb-0">24</h5><small>Students</small></div></div>
+                        <div class="col-6"><div class="stat-box"><h5 class="fw-bold mb-0">3</h5><small>Sections</small></div></div>
                     </div>
 
                     <button id="edit-btn" class="btn btn-primary w-100 rounded-3 fw-bold py-2" onclick="toggleEdit()">
@@ -131,11 +178,11 @@
                         </div>
                         <div class="col-md-6">
                             <label class="small fw-bold text-muted mb-1">Email Address</label>
-                            <input type="email" id="input-email" class="form-control editable-field bg-light border-0" value="not-set@school.edu" disabled>
+                            <input type="email" id="input-email" class="form-control editable-field bg-light border-0" value="teacher@school.edu" disabled>
                         </div>
                         <div class="col-12">
                             <label class="small fw-bold text-muted mb-1">Professional Bio</label>
-                            <textarea id="input-bio" class="form-control editable-field bg-light border-0" rows="4" disabled>No bio provided yet.</textarea>
+                            <textarea id="input-bio" class="form-control editable-field bg-light border-0" rows="4" disabled>Dedicated educator focused on digital literacy and student success.</textarea>
                         </div>
                     </div>
                 </div>
@@ -145,16 +192,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- 1. LOAD DATA FROM LOCALSTORAGE ---
         function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) { window.location.href = '../index.html'; return; }
 
-            if (!user) {
-                window.location.href = '../index.html';
-                return;
-            }
-
-            // Update Header & Info
             document.getElementById('header-name-text').innerText = user.name;
             document.getElementById('header-id-text').innerText = "ID: " + user.portalId;
             document.getElementById('display-name').innerText = user.name;
@@ -162,24 +203,11 @@
             document.getElementById('input-id').value = user.portalId;
             document.getElementById('input-class').value = user.classification.toUpperCase();
 
-            // Handle Profile Picture Persistence
-            if (user.profilePic) {
-                // If the user has a saved Base64 photo, use it
-                document.getElementById('header-avatar').src = user.profilePic;
-                document.getElementById('display-pfp').src = user.profilePic;
-            } else {
-                // Fallback to generated initials if no photo exists
-                const initials = user.name.split(' ').map(n => n[0]).join('+');
-                const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
-                document.getElementById('header-avatar').src = avatarUrl;
-                document.getElementById('display-pfp').src = avatarUrl;
-            }
+            const pfp = user.profilePic || `https://ui-avatars.com/api/?name=${user.name.replace(' ','+')}&background=0067ba&color=fff`;
+            document.getElementById('header-avatar').src = pfp;
+            document.getElementById('display-pfp').src = pfp;
         }
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', loadUserProfile);
-
-        // --- 2. LOGOUT LOGIC ---
         function handleLogout() {
             if(confirm("Confirm Log out?")) {
                 localStorage.removeItem('currentUser');
@@ -187,26 +215,18 @@
             }
         }
 
-        // --- 3. PERMANENT PFP UPLOAD LOGIC ---
-        // Using Base64 conversion to save image in localStorage
-        
         document.getElementById('pfp-input').onchange = function(evt) {
             const file = evt.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const base64Image = e.target.result;
-
-                    // Update UI
                     document.getElementById('display-pfp').src = base64Image;
                     document.getElementById('header-avatar').src = base64Image;
-
-                    // Save to Current Session
+                    
                     let user = JSON.parse(localStorage.getItem('currentUser'));
                     user.profilePic = base64Image;
                     localStorage.setItem('currentUser', JSON.stringify(user));
-
-                    // Save to Master User List
                     updateMasterUserList(user);
                 };
                 reader.readAsDataURL(file);
@@ -222,7 +242,6 @@
             }
         }
 
-        // --- 4. EDIT MODE LOGIC ---
         let isEditing = false;
         function toggleEdit() {
             isEditing = !isEditing;
@@ -241,17 +260,15 @@
                 btn.classList.replace('btn-success', 'btn-primary');
                 inputs.forEach(input => input.disabled = true);
 
-                const newName = document.getElementById('input-name').value;
-                
                 let user = JSON.parse(localStorage.getItem('currentUser'));
-                user.name = newName;
+                user.name = document.getElementById('input-name').value;
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 updateMasterUserList(user);
-                
                 loadUserProfile();
-                alert("Profile changes saved permanently!");
             }
         }
+
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
     </script>
 </body>
 </html>

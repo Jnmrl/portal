@@ -12,96 +12,131 @@
             --accent-bg: #f0f4f8; 
             --white: #ffffff;
             --primary: #0067ba;
+            --text-main: #2d3436;
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        body { background-color: var(--accent-bg); font-family: 'Inter', sans-serif; color: #2d3436; overflow-x: hidden; }
-
-        /* --- SIDEBAR & HEADER --- */
-        .sidebar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; transition: 0.3s; z-index: 1100; }
-        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin: 0.2rem 1rem; transition: 0.3s; display: flex; align-items: center; }
-        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
-        
-        .top-header { margin-left: 260px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 1.5rem; display: flex; justify-content: flex-end; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; height: 65px; transition: 0.3s; }
-        
-        main { margin-left: 260px; padding: 2rem; transition: 0.3s; }
-
-        .record-card { background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); }
-
-        /* --- TAB STYLING --- */
-        .nav-pills .nav-link { border-radius: 10px; color: var(--primary); font-weight: 600; cursor: pointer; }
-        .nav-pills .nav-link.active { background-color: var(--primary); color: white; }
-
-        /* --- MOBILE RESPONSIVENESS --- */
-        @media (max-width: 991px) {
-            .sidebar { margin-left: -260px; }
-            .sidebar.active { margin-left: 0; }
-            .top-header, main { margin-left: 0; }
-            .mobile-toggle { display: block !important; }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--accent-bg);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
-        
-        .mobile-toggle { display: none; position: absolute; left: 15px; top: 18px; font-size: 1.5rem; color: var(--primary); cursor: pointer; z-index: 1200; }
-        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; }
-        .sidebar-overlay.active { display: block; }
+
+        /* --- UNIFIED SIDEBAR --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050;
+            align-items: flex-start;
+        }
+
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff !important; }
+        .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+
+        .top-header {
+            margin-left: 260px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 2rem; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px; 
+        }
+
+        main { 
+            margin-left: 260px; 
+            height: calc(100vh - 60px); 
+            padding: 2.5rem; 
+            overflow-y: auto; 
+        }
+
+        .record-card { 
+            background: var(--white); 
+            border-radius: 20px; 
+            padding: 1.5rem; 
+            box-shadow: var(--shadow); 
+            border: none; 
+        }
+
+        .nav-pills .nav-link { border-radius: 50px; padding: 8px 25px; font-weight: 600; color: var(--text-main); }
+        .nav-pills .nav-link.active { background-color: var(--primary) !important; color: white !important; }
+
+        @media (max-width: 991px) {
+            html, body { overflow: auto; }
+            .navbar { width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
+            main { margin-left: 0; height: auto; padding: 1.5rem; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; }
+            .desktop-only { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-    <nav class="sidebar" id="sidebar">
-        <div class="p-4 d-flex justify-content-between align-items-center">
-            <h4 class="text-white fw-bold mb-0"><i class="fas fa-university me-2"></i>Registrar</h4>
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold" href="index.html">
+                    <i class="fas fa-university me-2"></i> 
+                    <span class="desktop-only">Registrar Portal</span>
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-th-large me-2"></i> Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-2"></i> Enrollment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-invoice me-2"></i> Requests</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="Records.html"><i class="fas fa-clipboard-list me-2"></i> Records</a></li>
+                    <li class="nav-item mt-lg-5">
+                        <a class="nav-link text-danger" href="javascript:void(0)" onclick="handleLogout()">
+                            <i class="fas fa-power-off me-2"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <ul class="nav flex-column mt-3">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-th-large me-3"></i>Overview
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Enrollment.html">
-                    <i class="fas fa-user-plus me-3"></i>Enrollment
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Request.html">
-                    <i class="fas fa-file-invoice me-3"></i>Requests
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="Records.html">
-                    <i class="fas fa-clipboard-list me-3"></i>Records
-                </a>
-            </li>
-            <li class="nav-item mt-5">
-                <a class="nav-link text-warning" href="javascript:void(0)" onclick="handleLogout()">
-                    <i class="fas fa-power-off me-3"></i>Log out
-                </a>
-            </li>
-        </ul>
     </nav>
 
     <header class="top-header">
-        <div class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        
-        <a href="Profile.html" class="d-flex align-items-center gap-3 text-decoration-none" style="cursor:pointer;">
+        <a href="Profile.html" class="d-flex align-items-center gap-2 text-decoration-none">
             <div class="text-end d-none d-sm-block">
-                <p class="fw-bold mb-0 text-dark" id="headerName">Registrar Officer</p>
-                <small class="text-muted" id="headerID">ID: REG-2026</small>
+                <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.8rem;">Loading...</p>
+                <small class="text-muted" id="headerID" style="font-size: 0.65rem;">ID: ---</small>
             </div>
-            <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Registrar+Officer&background=0067ba&color=fff" 
-                 class="rounded-circle border border-primary p-1" width="40" height="40" alt="Profile" style="object-fit: cover;">
+            <img src="" id="headerAvatar" class="rounded-circle border border-primary p-1" width="35" height="35" style="object-fit: cover;">
         </a>
     </header>
 
     <main>
         <div class="d-md-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2 class="fw-bold text-primary">Academic Records</h2>
-                <p class="text-muted">Database for Students and Faculty.</p>
+                <h3 class="fw-bold mb-0" style="color: var(--primary);">Academic Records</h3>
+                <p class="text-muted small">Centralized database for students and faculty.</p>
             </div>
-            <ul class="nav nav-pills bg-white p-2 rounded-pill shadow-sm" id="pills-tab">
+            <ul class="nav nav-pills bg-white p-1 rounded-pill shadow-sm" id="pills-tab">
                 <li class="nav-item"><button class="nav-link active" id="btnStudents" onclick="switchTable('students')">Students</button></li>
                 <li class="nav-item"><button class="nav-link" id="btnTeachers" onclick="switchTable('teachers')">Teachers</button></li>
             </ul>
@@ -110,19 +145,19 @@
         <div class="record-card">
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
-                    <thead id="tableHead"></thead>
+                    <thead id="tableHead" class="table-light"></thead>
                     <tbody id="recordBody"></tbody>
                 </table>
             </div>
         </div>
 
         <div class="modal fade" id="profileModal" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow" style="border-radius: 20px;">
                     <div class="modal-header border-0 pb-0">
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body" id="profileContent"></div>
+                    <div class="modal-body p-4" id="profileContent"></div>
                 </div>
             </div>
         </div>
@@ -130,34 +165,34 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- DATA ---
-        const studentData = [
-            { name: "Juan Dela Cruz", id: "123456789012", strand: "ICT", section: "12-ICT-A", status: "Enrolled", gwa: "94.5" },
-            { name: "Maria Santos", id: "987654321098", strand: "ABM", section: "11-ABM-B", status: "Enrolled", gwa: "92.0" },
-            { name: "Alex Lim", id: "112233445566", strand: "HUMSS", section: "12-HUMSS-C", status: "Enrolled", gwa: "89.8" },
-            { name: "Elena Gomez", id: "778899001122", strand: "HE", section: "11-HE-A", status: "Enrolled", gwa: "91.2" }
+        // --- DATA SOURCE ---
+        const defaultStudents = [
+            { name: "Juan Dela Cruz", lrn: "123456789012", strand: "ICT", grade: "12", gwa: "94.5" },
+            { name: "Maria Santos", lrn: "987654321098", strand: "ABM", grade: "11", gwa: "92.0" }
         ];
 
         const teacherData = [
-            { 
-                name: "Prof. Alberto Reyes", 
-                id: "TCH-2024-001", 
-                dept: "Technical-Vocational", 
-                sections: ["12-ICT-A", "11-ICT-B"], 
-                subjects: ["Media & Information Literacy", "Computer Programming"],
-                status: "Active"
-            },
-            { 
-                name: "Ms. Sofia Rivera", 
-                id: "TCH-2022-045", 
-                dept: "General Education", 
-                sections: ["12-HUMSS-C", "11-ABM-B"], 
-                subjects: ["Oral Communication", "Creative Writing"],
-                status: "Active"
-            }
+            { name: "Prof. Alberto Reyes", id: "TCH-2024-001", dept: "Tech-Voc", subjects: ["Programming", "MIL"], status: "Active" },
+            { name: "Ms. Sofia Rivera", id: "TCH-2022-045", dept: "Gen-Ed", subjects: ["Oral Com", "Literature"], status: "Active" }
         ];
 
         let currentView = 'students';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            syncProfile();
+            renderTable();
+        });
+
+        function syncProfile() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if(user) {
+                document.getElementById('headerName').innerText = user.name;
+                document.getElementById('headerID').innerText = `ID: ${user.portalId}`;
+                const avatar = document.getElementById('headerAvatar');
+                if(user.profilePic) avatar.src = user.profilePic;
+                else avatar.src = `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=0067ba&color=fff`;
+            }
+        }
 
         function switchTable(view) {
             currentView = view;
@@ -171,44 +206,48 @@
             const body = document.getElementById('recordBody');
 
             if (currentView === 'students') {
-                head.innerHTML = `<tr class="text-muted small"><th>Name</th><th>LRN</th><th>Strand</th><th>Section</th><th>Action</th></tr>`;
-                body.innerHTML = studentData.map((s, i) => `
+                // Get fresh data from Enrollment page storage + defaults
+                const enrolled = JSON.parse(localStorage.getItem('portal_students')) || [];
+                const allStudents = [...defaultStudents, ...enrolled];
+
+                head.innerHTML = `<tr class="text-muted small"><th>Name</th><th>LRN</th><th>Strand</th><th>Grade</th><th class="text-center">Action</th></tr>`;
+                body.innerHTML = allStudents.map((s, i) => `
                     <tr>
                         <td class="fw-bold">${s.name}</td>
-                        <td><code>${s.id}</code></td>
-                        <td><span class="badge bg-info text-dark">${s.strand}</span></td>
-                        <td>${s.section}</td>
-                        <td><button class="btn btn-sm btn-outline-primary" onclick="viewStudent(${i})">View Profile</button></td>
-                    </tr>
-                `).join('');
+                        <td><code>${s.lrn || s.id}</code></td>
+                        <td><span class="badge bg-light text-primary border">${s.strand}</span></td>
+                        <td>Grade ${s.grade}</td>
+                        <td class="text-center"><button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="viewStudent(${i})">View Profile</button></td>
+                    </tr>`).join('');
             } else {
-                head.innerHTML = `<tr class="text-muted small"><th>Teacher Name</th><th>Employee ID</th><th>Dept</th><th>Status</th><th>Action</th></tr>`;
+                head.innerHTML = `<tr class="text-muted small"><th>Teacher Name</th><th>ID</th><th>Department</th><th>Status</th><th class="text-center">Action</th></tr>`;
                 body.innerHTML = teacherData.map((t, i) => `
                     <tr>
                         <td class="fw-bold">${t.name}</td>
                         <td><code>${t.id}</code></td>
                         <td>${t.dept}</td>
-                        <td><span class="badge bg-success">${t.status}</span></td>
-                        <td><button class="btn btn-sm btn-primary" onclick="viewTeacher(${i})">View Handling</button></td>
-                    </tr>
-                `).join('');
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td class="text-center"><button class="btn btn-sm btn-primary rounded-pill px-3" onclick="viewTeacher(${i})">Details</button></td>
+                    </tr>`).join('');
             }
         }
 
         function viewStudent(i) {
-            const s = studentData[i];
+            const enrolled = JSON.parse(localStorage.getItem('portal_students')) || [];
+            const s = [...defaultStudents, ...enrolled][i];
             document.getElementById('profileContent').innerHTML = `
                 <div class="text-center mb-4">
-                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&size=100&background=random" class="rounded-circle shadow-sm mb-2">
+                    <img src="https://ui-avatars.com/api/?name=${s.name.replace(' ', '+')}&size=100&background=random" class="rounded-circle shadow-sm mb-2">
                     <h4 class="fw-bold mb-0">${s.name}</h4>
-                    <p class="text-muted small">Student | ${s.id}</p>
+                    <p class="text-muted small">Student ID: ${s.lrn || s.id}</p>
                 </div>
-                <div class="row g-3">
-                    <div class="col-6"><div class="p-3 bg-light rounded-4 border"><small class="text-muted d-block">Strand</small><span class="fw-bold">${s.strand}</span></div></div>
-                    <div class="col-6"><div class="p-3 bg-light rounded-4 border"><small class="text-muted d-block">Section</small><span class="fw-bold">${s.section}</span></div></div>
-                    <div class="col-12 text-center"><p class="mb-0 text-muted">Academic Performance GWA: <span class="text-primary fw-bold">${s.gwa}</span></p></div>
-                </div>
-            `;
+                <div class="row g-2">
+                    <div class="col-6"><div class="p-3 bg-light rounded-3 text-center"><small class="text-muted d-block">Strand</small><b>${s.strand}</b></div></div>
+                    <div class="col-6"><div class="p-3 bg-light rounded-3 text-center"><small class="text-muted d-block">Grade</small><b>${s.grade}</b></div></div>
+                    <div class="col-12 mt-3 text-center">
+                        <p class="mb-0">Academic Standing: <span class="text-primary fw-bold">${s.gwa || 'Evaluating...'}</span></p>
+                    </div>
+                </div>`;
             new bootstrap.Modal(document.getElementById('profileModal')).show();
         }
 
@@ -216,62 +255,28 @@
             const t = teacherData[i];
             document.getElementById('profileContent').innerHTML = `
                 <div class="text-center mb-4">
-                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&size=100&background=0067ba&color=fff" class="rounded-circle shadow-sm mb-2">
+                    <img src="https://ui-avatars.com/api/?name=${t.name.replace(' ', '+')}&size=100&background=0067ba&color=fff" class="rounded-circle shadow-sm mb-2">
                     <h4 class="fw-bold mb-0">${t.name}</h4>
-                    <p class="text-muted small">Faculty | ${t.id}</p>
+                    <p class="text-muted small">${t.dept} Faculty</p>
                 </div>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="p-3 bg-light rounded-4 border">
-                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-chalkboard me-2"></i>Handled Sections</h6>
-                            <ul class="list-unstyled mb-0">${t.sections.map(sec => `<li><i class="fas fa-check text-success me-2"></i>${sec}</li>`).join('')}</ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-3 bg-light rounded-4 border">
-                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-book me-2"></i>Assigned Subjects</h6>
-                            <ul class="list-unstyled mb-0">${t.subjects.map(sub => `<li><i class="fas fa-bookmark text-warning me-2"></i>${sub}</li>`).join('')}</ul>
-                        </div>
-                    </div>
-                </div>
-            `;
+                <h6 class="fw-bold small text-muted mb-2">Current Subjects</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    ${t.subjects.map(sub => `<span class="badge bg-soft-primary text-primary border">${sub}</span>`).join('')}
+                </div>`;
             new bootstrap.Modal(document.getElementById('profileModal')).show();
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
         function handleLogout() {
-            if(confirm("Are you sure you want to log out?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = '../Login Page/index.html';
-            }
-        }
-
-        // --- INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTable();
-            
-            // SHARED USER SYNC
-            const userJson = localStorage.getItem('currentUser');
-            if (userJson) {
-                const user = JSON.parse(userJson);
-                const nameEl = document.getElementById('headerName');
-                const avatarEl = document.getElementById('headerAvatar');
-
-                if (nameEl && user.name) nameEl.innerText = user.name;
-                if (avatarEl && user.profilePic) avatarEl.src = user.profilePic;
-            }
-        });
-
-         function handleLogout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem('currentUser');
                 window.location.href = '../index.html';
             }
         }
     </script>
+
+    <style>
+        .bg-soft-primary { background-color: #e7f1ff; }
+        code { color: #5700de; font-weight: 600; }
+    </style>
 </body>
 </html>

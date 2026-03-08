@@ -12,21 +12,53 @@
             --accent-bg: #f0f4f8; 
             --white: #ffffff;
             --primary: #0067ba;
+            --text-main: #2d3436;
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        html, body { height: 100%; background-color: var(--accent-bg); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        html, body { 
+            height: 100%; 
+            background-color: var(--accent-bg); 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            overflow: hidden;
+        }
 
-        /* --- SIDEBAR --- */
-        .sidebar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; padding: 2rem 1.2rem; z-index: 1050; transition: 0.3s; }
-        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin-bottom: 5px; display: flex; align-items: center; transition: 0.3s; text-decoration: none; }
-        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
-        
-        /* --- MAIN CONTENT --- */
-        main { margin-left: 260px; min-height: 100vh; padding: 4rem 2.5rem; transition: 0.3s; }
+        /* --- UPDATED NAVBAR & SIDEBAR (Matches Overview/Curriculum) --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050;
+            align-items: flex-start;
+        }
+
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff !important; }
+        .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
+
+        /* --- MAIN CONTENT AREA --- */
+        main { 
+            margin-left: 260px; 
+            height: 100vh;
+            padding: 3rem 2.5rem; 
+            overflow-y: auto;
+            transition: 0.3s; 
+        }
 
         /* --- PROFILE CARD ELEMENTS --- */
-        .profile-card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow); border: none; }
+        .profile-card { background: var(--white); border-radius: 24px; padding: 2.5rem; box-shadow: var(--shadow); border: none; }
         .profile-img-container { position: relative; width: 140px; margin: 0 auto 1.5rem; }
         .profile-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); padding: 3px; background: white; box-shadow: var(--shadow); }
         
@@ -45,31 +77,48 @@
         
         .stat-box { background: #f8faff; border-radius: 15px; padding: 1rem; text-align: center; border: 1px solid rgba(0,0,0,0.02); }
 
+        /* --- MOBILE ADAPTATIONS --- */
         @media (max-width: 991px) {
-            .sidebar { margin-left: -260px; }
-            .sidebar.active { margin-left: 0; width: 260px; }
-            main { margin-left: 0; padding: 5rem 1.5rem; }
-            .mobile-toggle { display: block !important; }
+            html, body { overflow: auto; }
+            .navbar { 
+                width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; 
+            }
+            main { margin-left: 0; margin-top: 60px; height: auto; padding: 1.5rem; overflow: visible; }
+            .navbar-collapse { 
+                background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; 
+            }
+            .desktop-only { display: none; }
         }
-
-        .mobile-toggle { display: none; position: fixed; top: 15px; left: 15px; z-index: 1100; background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-
-    <nav class="sidebar" id="sidebar">
-        <div class="mb-4 px-3">
-            <h5 class="text-white fw-bold"><i class="fas fa-university me-2"></i>Registrar</h5>
+    <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
+        <div class="container-fluid flex-lg-column">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <a class="navbar-brand fw-bold" href="index.html">
+                    <i class="fas fa-university me-2"></i> 
+                    <span class="desktop-only">Registrar Portal</span>
+                    <span class="d-lg-none">Portal</span>
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse w-100" id="sidebarMenu">
+                <ul class="navbar-nav flex-column w-100 mt-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-th-large me-2"></i> Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-2"></i> Enrollment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-alt me-2"></i> Requests</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Records.html"><i class="fas fa-clipboard-list me-2"></i> Records</a></li>
+                    <li class="nav-item mt-lg-5">
+                        <a class="nav-link text-danger" href="javascript:void(0)" onclick="handleLogout()">
+                            <i class="fas fa-power-off me-2"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-th-large me-2"></i> Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-2"></i> Enrollment</a></li>
-            <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-alt me-2"></i> Requests</a></li>
-            <li class="nav-item"><a class="nav-link" href="Records.html"><i class="fas fa-clipboard-list me-2"></i> Records</a></li>
-            <li class="nav-item mt-5"><a class="nav-link text-warning" href="javascript:void(0)" onclick="handleLogout()"><i class="fas fa-power-off me-2"></i> Log out</a></li>
-        </ul>
     </nav>
 
     <main>
@@ -84,7 +133,7 @@
                         <input type="file" id="pfp-input" accept="image/*">
                     </div>
                     
-                    <h4 id="display-name" class="fw-bold mb-1">Registrar Officer</h4>
+                    <h4 id="display-name" class="fw-bold mb-1 text-dark">Registrar Officer</h4>
                     <span class="badge bg-light text-primary border px-3 py-2 rounded-pill mb-4">Senior Administrator</span>
                     
                     <div class="row g-2 mb-4">
@@ -134,6 +183,7 @@
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function loadProfile() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -146,11 +196,12 @@
             document.getElementById('input-name').value = user.name;
             document.getElementById('input-id').value = user.portalId;
 
+            const displayPfp = document.getElementById('display-pfp');
             if (user.profilePic) {
-                document.getElementById('display-pfp').src = user.profilePic;
+                displayPfp.src = user.profilePic;
             } else {
                 const initials = user.name.split(' ').map(n => n[0]).join('+');
-                document.getElementById('display-pfp').src = `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
+                displayPfp.src = `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
             }
         }
 
@@ -207,10 +258,6 @@
                 loadProfile();
                 alert("Profile changes saved successfully!");
             }
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
         }
 
         function handleLogout() {

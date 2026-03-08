@@ -12,24 +12,67 @@
             --accent-bg: #f0f4f8; 
             --white: #ffffff;
             --primary: #0067ba;
-            --text-dark: #2d3436; /* High contrast text */
+            --text-dark: #2d3436;
             --text-muted: #636e72;
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        html, body { height: 100%; overflow: hidden; background-color: var(--accent-bg); font-family: 'Inter', sans-serif; color: var(--text-dark); }
+        html, body { 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: var(--accent-bg); 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            color: var(--text-dark); 
+        }
 
-        .navbar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; padding: 2rem 1.2rem; z-index: 1050; align-items: flex-start; }
-        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin-bottom: 5px; display: flex; align-items: center; transition: 0.3s; text-decoration: none; }
+        /* --- SHARED NAVIGATION & HEADER --- */
+        .navbar { 
+            background: var(--sidebar-bg); 
+            height: 100vh; 
+            position: fixed; 
+            width: 260px; 
+            padding: 2rem 1.2rem; 
+            z-index: 1050; 
+            align-items: flex-start; 
+        }
+
+        .nav-link { 
+            color: rgba(255,255,255,0.7) !important; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            margin-bottom: 5px; 
+            display: flex; 
+            align-items: center; 
+            transition: 0.3s; 
+            text-decoration: none;
+        }
+
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff !important; }
         .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
         
-        .top-header { margin-left: 260px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 2rem; display: flex; justify-content: flex-end; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; height: 60px; }
-        main { margin-left: 260px; height: calc(100vh - 60px); padding: 2rem; overflow-y: auto; }
+        .top-header { 
+            margin-left: 260px; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            padding: 0 2rem; 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            box-shadow: var(--shadow); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            height: 60px; 
+        }
 
-        /* Visibility Fixes for Text */
-        h2, h3, h4 { color: var(--text-dark) !important; font-weight: 700; }
-        .text-muted { color: var(--text-muted) !important; }
+        main { 
+            margin-left: 260px; 
+            height: calc(100vh - 60px); 
+            padding: 2rem; 
+            overflow-y: auto; 
+        }
 
+        /* --- ATTENDANCE COMPONENTS --- */
         .section-box {
             background: var(--white);
             border-radius: 20px;
@@ -38,6 +81,7 @@
             transition: 0.3s;
             border: 2px solid transparent;
             box-shadow: var(--shadow);
+            height: 100%;
         }
         .section-box:hover { border-color: var(--primary); transform: translateY(-5px); }
         
@@ -49,41 +93,29 @@
             border-bottom: 1px solid #dfe6e9;
         }
 
-        .student-name { color: var(--text-dark); font-weight: 600; font-size: 1rem; }
-
         .status-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 2px solid #b2bec3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 800;
-            color: var(--text-dark);
+            width: 38px; height: 38px; border-radius: 50%;
+            border: 2px solid #b2bec3; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 0.9rem; cursor: pointer; transition: 0.2s;
+            font-weight: 800; color: var(--text-dark);
         }
         .status-p.active { background: #2ecc71; color: white; border-color: #27ae60; }
         .status-a.active { background: #e74c3c; color: white; border-color: #c0392b; }
         .status-l.active { background: #f1c40f; color: #2d3436; border-color: #f39c12; }
 
-        /* History Table Visibility */
         .history-card { background: white; border-radius: 15px; padding: 25px; box-shadow: var(--shadow); border: 1px solid #dcdde1; }
-        .table thead th { color: var(--text-dark); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 2px solid #eee; }
-        .table tbody td { color: var(--text-dark); font-weight: 500; padding: 12px 8px; }
+        .badge-p { background: #d4edda; color: #155724; }
+        .badge-a { background: #f8d7da; color: #721c24; }
+        .badge-l { background: #fff3cd; color: #856404; }
 
-        /* High Contrast Badges for History */
-        .badge-p { background: #d4edda; color: #155724; font-weight: 700; border: 1px solid #c3e6cb; }
-        .badge-a { background: #f8d7da; color: #721c24; font-weight: 700; border: 1px solid #f5c6cb; }
-        .badge-l { background: #fff3cd; color: #856404; font-weight: 700; border: 1px solid #ffeeba; }
-
+        /* --- MOBILE HAMBURGER UI --- */
         @media (max-width: 991px) {
             html, body { overflow: auto; }
             .navbar { width: 100%; height: auto; position: fixed; top: 0; padding: 0.7rem 1rem; flex-direction: row !important; }
-            .top-header { margin-left: 0; margin-top: 55px; height: 50px; }
+            .top-header { margin-left: 0; margin-top: 55px; height: 50px; padding: 0 1rem; }
             main { margin-left: 0; height: auto; padding: 1rem; }
+            .navbar-collapse { background: var(--sidebar-bg); position: absolute; top: 55px; left: 0; width: 100%; padding: 1rem; border-radius: 0 0 20px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
             .desktop-only { display: none; }
         }
     </style>
@@ -93,10 +125,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark flex-lg-column">
         <div class="container-fluid flex-lg-column">
             <div class="d-flex justify-content-between w-100 align-items-center">
-                <a class="navbar-brand fw-bold" href="homepage.html">
+                <a class="navbar-brand fw-bold" href="index.html">
                     <i class="fas fa-chalkboard-teacher me-2"></i> 
                     <span class="desktop-only">Teacher Portal</span>
+                    <span class="d-lg-none">Portal</span> 
                 </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
             <div class="collapse navbar-collapse w-100" id="sidebarMenu">
                 <ul class="navbar-nav flex-column w-100 mt-lg-4">
@@ -111,7 +147,7 @@
     </nav>
 
     <header class="top-header">
-        <a href="profile.html" class="d-flex align-items-center gap-2 text-decoration-none" style="cursor: pointer;">
+        <a href="profile.html" class="d-flex align-items-center gap-2 text-decoration-none">
             <div class="text-end d-none d-sm-block">
                 <p class="fw-bold mb-0 text-dark" id="headerName" style="font-size: 0.85rem;">Professor</p>
                 <small class="text-muted fw-bold" id="headerID" style="font-size: 0.7rem;">Portal ID</small>
@@ -121,17 +157,17 @@
     </header>
 
     <main>
-        <div class="d-flex justify-content-between align-items-end mb-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-end mb-4 gap-3">
             <div>
                 <h2 class="fw-bold mb-1">Attendance Monitoring</h2>
-                <p class="text-muted fw-bold">Manage daily records or track monthly history.</p>
+                <p class="text-muted fw-bold mb-0">Manage daily records or track monthly history.</p>
             </div>
             <ul class="nav nav-pills bg-white p-1 rounded-3 shadow-sm border">
                 <li class="nav-item">
-                    <button class="nav-link active py-2 px-4 fw-bold" id="record-tab" onclick="switchView('record')">Daily Record</button>
+                    <button class="nav-link active py-2 px-3 px-md-4 fw-bold" id="record-tab" onclick="switchView('record')">Daily Record</button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link py-2 px-4 fw-bold" id="history-tab" onclick="switchView('history')">Monthly History</button>
+                    <button class="nav-link py-2 px-3 px-md-4 fw-bold" id="history-tab" onclick="switchView('history')">Monthly History</button>
                 </li>
             </ul>
         </div>
@@ -162,7 +198,7 @@
             </div>
 
             <div id="attendanceList" class="mt-4 d-none">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                     <button class="btn btn-sm btn-dark px-3 fw-bold" onclick="backToSections()"><i class="fas fa-arrow-left me-2"></i>Back</button>
                     <h3 id="currentSectionTitle" class="fw-bold mb-0 text-primary"></h3>
                     <button class="btn btn-primary shadow fw-bold" onclick="saveAttendance()">Submit Attendance</button>
@@ -173,12 +209,12 @@
 
         <div id="view-history" class="d-none">
             <div class="history-card">
-                <div class="row mb-4">
-                    <div class="col-md-4">
+                <div class="row mb-4 g-3">
+                    <div class="col-md-6 col-lg-4">
                         <label class="small fw-bold text-dark mb-1">Select Month</label>
                         <input type="month" id="historyMonth" class="form-control fw-bold border-primary" onchange="loadMonthlyHistory()">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 col-lg-4">
                         <label class="small fw-bold text-dark mb-1">Select Section</label>
                         <select id="historySection" class="form-select fw-bold" onchange="loadMonthlyHistory()">
                             <option value="All">All Sections</option>
@@ -196,11 +232,10 @@
                                 <th>Date</th>
                                 <th>Student Details</th>
                                 <th>Section</th>
-                                <th class="text-center">Attendance Status</th>
+                                <th class="text-center">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="historyTableBody">
-                            </tbody>
+                        <tbody id="historyTableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -229,18 +264,12 @@
         });
 
         function switchView(view) {
-            if(view === 'record') {
-                document.getElementById('view-record').classList.remove('d-none');
-                document.getElementById('view-history').classList.add('d-none');
-                document.getElementById('record-tab').classList.add('active');
-                document.getElementById('history-tab').classList.remove('active');
-            } else {
-                document.getElementById('view-record').classList.add('d-none');
-                document.getElementById('view-history').classList.remove('d-none');
-                document.getElementById('record-tab').classList.remove('active');
-                document.getElementById('history-tab').classList.add('active');
-                loadMonthlyHistory();
-            }
+            const isRecord = view === 'record';
+            document.getElementById('view-record').classList.toggle('d-none', !isRecord);
+            document.getElementById('view-history').classList.toggle('d-none', isRecord);
+            document.getElementById('record-tab').classList.toggle('active', isRecord);
+            document.getElementById('history-tab').classList.toggle('active', !isRecord);
+            if(!isRecord) loadMonthlyHistory();
         }
 
         function showAttendance(sectionName) {
@@ -249,7 +278,7 @@
             document.getElementById('currentSectionTitle').innerText = sectionName;
             
             const sectionData = students.filter(s => s.section === sectionName);
-            let listHtml = sectionData.length === 0 ? `<div class="text-center py-5 fw-bold text-muted">No students registered in this section.</div>` : "";
+            let listHtml = sectionData.length === 0 ? `<div class="text-center py-5 fw-bold text-muted">No students registered.</div>` : "";
 
             sectionData.forEach(student => {
                 listHtml += `
@@ -275,14 +304,13 @@
 
         function saveAttendance() {
             const rows = document.querySelectorAll('.student-row');
-            const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+            const today = new Date().toLocaleDateString('en-CA');
             let newEntries = [];
             let allMarked = true;
 
             rows.forEach(row => {
                 const selectedBtn = row.querySelector('.status-btn.active');
                 if(!selectedBtn) { allMarked = false; return; }
-                
                 newEntries.push({
                     date: today,
                     studentId: row.getAttribute('data-id'),
@@ -292,11 +320,11 @@
                 });
             });
 
-            if(!allMarked) { alert("Action Required: Please mark all students."); return; }
+            if(!allMarked) { alert("Please mark all students before submitting."); return; }
 
             attendanceRecords = [...attendanceRecords, ...newEntries];
             localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(attendanceRecords));
-            alert("Success: Attendance for " + today + " has been saved.");
+            alert("Attendance saved successfully!");
             backToSections();
         }
 
@@ -310,23 +338,18 @@
                 return recordMonth === filterMonth && (filterSection === "All" || record.section === filterSection);
             });
 
-            if(filtered.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="text-center py-5 fw-bold text-muted">No records found for the selected criteria.</td></tr>`;
-                return;
-            }
-
-            tableBody.innerHTML = filtered.map(r => `
+            tableBody.innerHTML = filtered.length === 0 ? `<tr><td colspan="4" class="text-center py-5 text-muted">No records found.</td></tr>` : 
+                filtered.map(r => `
                 <tr>
                     <td class="fw-bold text-primary">${r.date}</td>
                     <td><span class="fw-bold">${r.name}</span><br><small class="text-muted">${r.studentId}</small></td>
                     <td><span class="badge bg-light text-dark border fw-bold">${r.section}</span></td>
                     <td class="text-center">
-                        <span class="badge px-4 py-2 rounded-pill badge-${r.status.toLowerCase()}">
+                        <span class="badge px-3 py-2 rounded-pill badge-${r.status.toLowerCase()}">
                             ${r.status === 'P' ? 'PRESENT' : r.status === 'A' ? 'ABSENT' : 'LATE'}
                         </span>
                     </td>
-                </tr>
-            `).join('');
+                </tr>`).join('');
         }
 
         function backToSections() {
@@ -338,19 +361,18 @@
         function updateCounts() {
             ['Quezon', 'Lapu-Lapu', 'Escoda'].forEach(sec => {
                 const count = students.filter(s => s.section === sec).length;
-                const element = document.getElementById(`count-${sec}`);
-                if(element) element.innerText = `${count} Student${count !== 1 ? 's' : ''}`;
+                const el = document.getElementById(`count-${sec}`);
+                if(el) el.innerText = `${count} Student${count !== 1 ? 's' : ''}`;
             });
         }
 
         function loadHeaderData() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (!user) { window.location.href = 'login.html'; return; }
+            if (!user) { window.location.href = '../index.html'; return; }
             document.getElementById('headerName').innerText = user.name;
             document.getElementById('headerID').innerText = "ID: " + user.portalId;
-            const headerPic = document.getElementById('headerProfilePic');
-            const initials = user.name.split(' ').map(n => n[0]).join('+');
-            headerPic.src = user.profilePic || `https://ui-avatars.com/api/?name=${initials}&background=0067ba&color=fff`;
+            const pfp = user.profilePic || `https://ui-avatars.com/api/?name=${user.name.replace(' ','+')}&background=0067ba&color=fff`;
+            document.getElementById('headerProfilePic').src = pfp;
         }
 
         function handleLogout() {

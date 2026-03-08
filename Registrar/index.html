@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar | Enrollment Management</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-
+    <title>Overview | Registrar Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -21,16 +17,19 @@
 
         body { background-color: var(--accent-bg); font-family: 'Inter', sans-serif; color: #2d3436; overflow-x: hidden; }
 
-        /* --- SIDEBAR & HEADER --- */
+        /* --- SIDEBAR & HEADER (Matches Enrollment) --- */
         .sidebar { background: var(--sidebar-bg); height: 100vh; position: fixed; width: 260px; transition: 0.3s; z-index: 1100; }
-        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin: 0.2rem 1rem; transition: 0.3s; display: flex; align-items: center; }
+        .nav-link { color: rgba(255,255,255,0.7) !important; padding: 12px 15px; border-radius: 12px; margin: 0.2rem 1rem; transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
         .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: #fff !important; }
         
         .top-header { margin-left: 260px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 1.5rem; display: flex; justify-content: flex-end; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; height: 65px; transition: 0.3s; }
         
         main { margin-left: 260px; padding: 2rem; transition: 0.3s; }
 
-        .enrollment-card { background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); }
+        /* --- DASHBOARD CARDS --- */
+        .stat-card { background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); height: 100%; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; background: #f0f7ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 1rem; }
 
         /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 991px) {
@@ -64,8 +63,8 @@
             <h4 class="text-white fw-bold mb-0"><i class="fas fa-university me-2"></i>Registrar</h4>
         </div>
         <ul class="nav flex-column mt-3">
-            <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-th-large me-3"></i>Overview</a></li>
-            <li class="nav-item"><a class="nav-link active" href="Enrollment.html"><i class="fas fa-user-plus me-3"></i>Enrollment</a></li>
+            <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-th-large me-3"></i>Overview</a></li>
+            <li class="nav-item"><a class="nav-link" href="Enrollment.html"><i class="fas fa-user-plus me-3"></i>Enrollment</a></li>
             <li class="nav-item"><a class="nav-link" href="Request.html"><i class="fas fa-file-invoice me-3"></i>Requests</a></li>
             <li class="nav-item"><a class="nav-link" href="Records.html"><i class="fas fa-clipboard-list me-3"></i>Records</a></li>
             <li class="nav-item mt-5">
@@ -78,156 +77,113 @@
 
     <header class="top-header">
         <div class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        <a href="Profile.html" class="d-flex align-items-center gap-3 text-decoration-none" style="cursor:pointer;">
+        <a href="Profile.html" class="d-flex align-items-center gap-3 text-decoration-none">
             <div class="text-end d-none d-sm-block">
                 <p class="fw-bold mb-0 text-dark" id="headerName">Registrar Officer</p>
-                <small class="text-muted">ID: REG-2026</small>
+                <small class="text-muted" id="headerID">ID: REG-2026</small>
             </div>
             <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Registrar+Officer&background=0067ba&color=fff" 
-                 class="rounded-circle border border-primary p-1" width="40" height="40" alt="Profile" style="object-fit: cover;">
+                 class="rounded-circle border border-primary p-1" width="40" height="40" alt="Profile">
         </a>
     </header>
 
     <main>
-        <div class="d-md-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold text-primary">Student Enrollment</h2>
-                <p class="text-muted">Currently managing <span id="studentCount">0</span> enrollees.</p>
-            </div>
-            <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#enrollModal">
-                <i class="fas fa-plus me-2"></i>New Enrollment
-            </button>
+        <div class="mb-4">
+            <h2 class="fw-bold text-primary">System Overview</h2>
+            <p class="text-muted">Real-time metrics for enrollment and documentation.</p>
         </div>
 
-        <div class="modal fade" id="enrollModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius: 20px;">
-                    <div class="modal-header border-0">
-                        <h5 class="fw-bold">Enroll New Student</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form id="enrollmentForm">
-                        <div class="modal-body">
-                            <div class="mb-3"><label class="small fw-bold">Full Name</label><input type="text" id="studentName" class="form-control" required></div>
-                            <div class="mb-3"><label class="small fw-bold">LRN (12 Digits)</label><input type="text" id="studentLRN" class="form-control" maxlength="12" required></div>
-                            <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label class="small fw-bold">Strand</label>
-                                    <select id="studentStrand" class="form-select">
-                                        <option>ABM</option><option>HUMSS</option><option>ICT</option><option>HE</option>
-                                    </select>
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <label class="small fw-bold">Grade Level</label>
-                                    <select id="studentGrade" class="form-select">
-                                        <option>Grade 11</option><option>Grade 12</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit Enrollment</button>
-                        </div>
-                    </form>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <h6 class="text-muted small fw-bold">TOTAL STUDENTS</h6>
+                    <h3 class="fw-bold" id="totalStudentsCount">0</h3>
+                    <small class="text-success"><i class="fas fa-arrow-up"></i> Live Tracking</small>
                 </div>
             </div>
-        </div>
 
-        <div class="enrollment-card">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                        <tr class="text-muted small">
-                            <th>LRN</th><th>Student Name</th><th>Strand</th><th>Grade</th><th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="enrollmentBody"></tbody>
-                </table>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <h6 class="text-muted small fw-bold">PENDING REQUESTS</h6>
+                    <h3 class="fw-bold">12</h3>
+                    <small class="text-warning">Action required</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <h6 class="text-muted small fw-bold">PROCESSED TODAY</h6>
+                    <h3 class="fw-bold">24</h3>
+                    <small class="text-muted">Documents released</small>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="stat-card">
+                    <h6 class="fw-bold text-muted small mb-4">RECENTLY ENROLLED STUDENTS</h6>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr class="small text-muted">
+                                    <th>Name</th><th>Strand</th><th>Grade</th><th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentEnrollmentBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- DATA PERSISTENCE ---
-        const getStudents = () => JSON.parse(localStorage.getItem('enrolledStudents')) || [];
-        const saveStudents = (data) => localStorage.setItem('enrolledStudents', JSON.stringify(data));
-
-        function renderTable() {
-            const students = getStudents();
-            const body = document.getElementById('enrollmentBody');
-            document.getElementById('studentCount').innerText = students.length;
-
-            if (students.length === 0) {
-                body.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No students enrolled yet.</td></tr>';
-                return;
-            }
-
-            body.innerHTML = students.map((s, index) => `
-                <tr>
-                    <td><span class="fw-bold small">${s.lrn}</span></td>
-                    <td>${s.name}</td>
-                    <td><span class="badge bg-light text-primary">${s.strand}</span></td>
-                    <td>${s.grade}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
+        // Sidebar Toggle
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // --- THE UN-UNDOABLE LOGOUT ---
+        // Logout
         function handleLogout() {
-            if(confirm("Are you sure you want to log out? This will end your session permanently.")) {
+            if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem('currentUser');
                 window.location.href = '../index.html';
             }
         }
 
-        // --- FORM SUBMISSION ---
-        document.getElementById('enrollmentForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const students = getStudents();
-            const newStudent = {
-                name: document.getElementById('studentName').value,
-                lrn: document.getElementById('studentLRN').value,
-                strand: document.getElementById('studentStrand').value,
-                grade: document.getElementById('studentGrade').value
-            };
-            students.push(newStudent);
-            saveStudents(students);
-            renderTable();
-            e.target.reset();
-            bootstrap.Modal.getInstance(document.getElementById('enrollModal')).hide();
-        });
-
-        function deleteStudent(index) {
-            if (confirm("Remove this student from enrollment?")) {
-                const students = getStudents();
-                students.splice(index, 1);
-                saveStudents(students);
-                renderTable();
-            }
-        }
-
+        // Data Sync
         document.addEventListener('DOMContentLoaded', () => {
-            renderTable();
-            // SHARED USER SYNC
+            const students = JSON.parse(localStorage.getItem('enrolledStudents')) || [];
+            document.getElementById('totalStudentsCount').innerText = students.length;
+
+            const recentBody = document.getElementById('recentEnrollmentBody');
+            
+            if (students.length === 0) {
+                recentBody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">No recent enrollments.</td></tr>';
+            } else {
+                // Show last 5 enrolled
+                const recent = students.slice(-5).reverse();
+                recentBody.innerHTML = recent.map(s => `
+                    <tr>
+                        <td class="fw-bold">${s.name}</td>
+                        <td><span class="badge bg-light text-primary border">${s.strand}</span></td>
+                        <td>${s.grade}</td>
+                        <td class="text-muted small">${s.dateEnrolled || 'N/A'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Sync Header User
             const userJson = localStorage.getItem('currentUser');
             if (userJson) {
                 const user = JSON.parse(userJson);
-                const nameEl = document.getElementById('headerName');
-                const avatarEl = document.getElementById('headerAvatar');
-                if (nameEl && user.name) nameEl.innerText = user.name;
-                if (avatarEl && user.profilePic) avatarEl.src = user.profilePic;
+                if (user.name) document.getElementById('headerName').innerText = user.name;
+                if (user.profilePic) document.getElementById('headerAvatar').src = user.profilePic;
             }
         });
     </script>
